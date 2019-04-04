@@ -3,8 +3,9 @@
  */
 package main.java.codelets.system1.sensory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
@@ -25,8 +26,6 @@ public class BatterySensor extends SensoryCodelet {
 	
 	private Memory batteryStateMO;
 	
-	private Memory batteryValueMO;
-	
 	private LogConfig lc;
 
 	public BatterySensor(String id, Crazyflie crazyflie) {
@@ -41,12 +40,11 @@ public class BatterySensor extends SensoryCodelet {
 
 	@Override
 	public void accessMemoryObjects() {
+		
+		int index = 0;
 
 		if(batteryStateMO == null)
-			batteryStateMO = this.getOutput(id, 0);	
-		
-		if(batteryValueMO == null)
-			batteryValueMO = this.getOutput(id, 1);
+			batteryStateMO = this.getOutput(id, index);	
 	}
 
 	@Override
@@ -84,39 +82,37 @@ public class BatterySensor extends SensoryCodelet {
 		            logg.addLogListener(new LogListener() {
 
 		                public void logConfigAdded(LogConfig logConfig) {
-		                    String msg = "";
-		                    if(logConfig.isAdded()) {
-		                        msg = "' added";
-		                    } else {
-		                        msg = "' deleted";
-		                    }
-		                    System.out.println("LogConfig '" + logConfig.getName() + msg);
+//		                    String msg = "";
+//		                    if(logConfig.isAdded()) {
+//		                        msg = "' added";
+//		                    } else {
+//		                        msg = "' deleted";
+//		                    }
+//		                    System.out.println("LogConfig '" + logConfig.getName() + msg);
 		                }
 
 		                public void logConfigError(LogConfig logConfig) {
-		                    System.err.println("Error when logging '" + logConfig.getName() + "': " + logConfig.getErrNo());
+//		                    System.err.println("Error when logging '" + logConfig.getName() + "': " + logConfig.getErrNo());
 		                }
 
 		                public void logConfigStarted(LogConfig logConfig) {
-		                    String msg = "";
-		                    if(logConfig.isStarted()) {
-		                        msg = "' started";
-		                    } else {
-		                        msg = "' stopped";
-		                    }
-		                    System.out.println("LogConfig '" + logConfig.getName() + msg);
+//		                    String msg = "";
+//		                    if(logConfig.isStarted()) {
+//		                        msg = "' started";
+//		                    } else {
+//		                        msg = "' stopped";
+//		                    }
+//		                    System.out.println("LogConfig '" + logConfig.getName() + msg);
 		                }
 
 		                public void logDataReceived(LogConfig logConfig, Map<String, Number> data, int timestamp) {
-		                    System.out.println("timestamp: " + timestamp);
-		                    batteryStateMO.setI(data.get("pm.state"));
-		                    batteryValueMO.setI(data.get("pm.vbat"));	                  
-		                    for (Entry<String, Number> entry : data.entrySet()) {
-		                        System.out.print("\t" + entry.getKey() + ": " + entry.getValue());
-		                    }
-		                    System.out.println();
+//		                    System.out.println("timestamp: " + timestamp);
+		                    List<Number> batteryMeasures = new ArrayList<>();
+		                    batteryMeasures.add(data.get("pm.state"));
+		                    batteryMeasures.add(data.get("pm.vbat"));
+		                    batteryStateMO.setI(batteryMeasures);                 
+//		                    System.out.println("Estado da bateria: "+batteryMeasures.get(0)+", valor da bateria (V): "+batteryMeasures.get(1));
 		                }
-
 		            });
 
 		            // Start the logging
@@ -124,12 +120,9 @@ public class BatterySensor extends SensoryCodelet {
 	        	}
 	        } else {
 	        	batteryStateMO.setI(null);
-	        	batteryValueMO.setI(null);
 	        }
 		}else {
 			batteryStateMO.setI(null);
-			batteryValueMO.setI(null);
 		}
 	}
-
 }

@@ -3,8 +3,12 @@
  */
 package main.java;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import br.unicamp.meca.mind.MecaMind;
+import br.unicamp.meca.system1.codelets.SensoryCodelet;
+import main.java.codelets.system1.sensory.BatterySensor;
 import se.bitcraze.crazyflie.lib.crazyflie.ConnectionAdapter;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
 import se.bitcraze.crazyflie.lib.crazyradio.ConnectionData;
@@ -50,8 +54,48 @@ public class Main {
         public void setupFinished() {
             System.out.println("SETUP FINISHED");
             
+            mountCrazyflieMECAMind();
         }
 	};
+	
+	private void mountCrazyflieMECAMind() {
+		
+		MecaMind mecaMind = new MecaMind("Mind of the Crazyflie");
+		
+		/* Sensory codelets we are about to create for this Crazyflie*/
+		List<SensoryCodelet> sensoryCodelets = new ArrayList<>();	
+		/* Lists that will hold the codelets ids. This is important 
+		 * for the MECA mind mounting algorithm be able to glue the 
+		 * codelets according to the reference architecture
+		 * */
+		ArrayList<String> sensoryCodeletsIds = new ArrayList<>();
+		
+		BatterySensor batterySensor = new BatterySensor("BatterySensor", crazyflie);
+		sensoryCodelets.add(batterySensor);
+		sensoryCodeletsIds.add(batterySensor.getId());
+		
+		/*
+		 * Inserting the System 1 codelets inside MECA mind
+		 */
+		mecaMind.setSensoryCodelets(sensoryCodelets);
+		
+		/*
+		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
+		 * is responsible for wiring the MecaMind altogether according to the reference architecture, including
+		 * the creation of memory objects and containers which glue them together. This method is of pivotal
+		 * importance and inside it resides all the value from the reference architecture created - the idea is 
+		 * that the user only has to create the codelets, put them inside lists of differente types and call
+		 * this method, which transparently glue the codelets together accordingly to the MECA reference 
+		 * architecture.
+		 */			
+		mecaMind.mountMecaMind();
+		
+		/*
+		 * Starting the mind
+		 */
+		mecaMind.start();
+		
+	}
 
 	/**
 	 * @param args
