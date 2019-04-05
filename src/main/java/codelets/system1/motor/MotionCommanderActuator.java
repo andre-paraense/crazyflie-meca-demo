@@ -26,6 +26,11 @@ public class MotionCommanderActuator extends MotorCodelet {
 		super(id);
 		
 		motionCommander = new MotionCommander(crazyflie);
+		try {
+			motionCommander.takeOff();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
