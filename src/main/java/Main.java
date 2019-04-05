@@ -9,6 +9,7 @@ import java.util.List;
 import br.unicamp.meca.mind.MecaMind;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
+import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
 import main.java.codelets.system1.sensory.WholeBodySensor;
 import se.bitcraze.crazyflie.lib.crazyflie.ConnectionAdapter;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
@@ -83,13 +84,16 @@ public class Main {
 		List<PerceptualCodelet> perceptualCodelets = new ArrayList<>();
 		ArrayList<String> perceptualCodeletsIds = new ArrayList<>();
 		
-		
+		SituationPerceptualCodelet situationPerceptualCodelet = new SituationPerceptualCodelet("SituationPerceptualCodelet", sensoryCodeletsIds);
+		perceptualCodeletsIds.add(situationPerceptualCodelet.getId());
+		perceptualCodelets.add(situationPerceptualCodelet);		
 		
 
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
 		 */
 		mecaMind.setSensoryCodelets(sensoryCodelets);
+		mecaMind.setPerceptualCodelets(perceptualCodelets);
 
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which

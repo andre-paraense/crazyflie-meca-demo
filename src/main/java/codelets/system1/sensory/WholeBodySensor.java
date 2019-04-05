@@ -55,9 +55,6 @@ public class WholeBodySensor extends SensoryCodelet {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see br.unicamp.cst.core.entities.Codelet#calculateActivation()
-	 */
 	@Override
 	public void calculateActivation() {
 		try{
@@ -68,12 +65,8 @@ public class WholeBodySensor extends SensoryCodelet {
 
 			e.printStackTrace();
 		}	
-
 	}
 
-	/* (non-Javadoc)
-	 * @see br.unicamp.cst.core.entities.Codelet#proc()
-	 */
 	@Override
 	public void proc() {
 		if(crazyflie != null && crazyflie.isConnected()) {	       
@@ -89,38 +82,38 @@ public class WholeBodySensor extends SensoryCodelet {
 					logg.addLogListener(new LogListener() {
 
 						public void logConfigAdded(LogConfig logConfig) {
-							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-								String msg = "";
-								if(logConfig.isAdded()) {
-									msg = "' added";
-								} else {
-									msg = "' deleted";
-								}
-								System.out.println("LogConfig '" + logConfig.getName() + msg);
-							}
+//							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//								String msg = "";
+//								if(logConfig.isAdded()) {
+//									msg = "' added";
+//								} else {
+//									msg = "' deleted";
+//								}
+//								System.out.println("LogConfig '" + logConfig.getName() + msg);
+//							}
 						}
 
 						public void logConfigError(LogConfig logConfig) {
-							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-								System.err.println("Error when logging '" + logConfig.getName() + "': " + logConfig.getErrNo());
-							}		                    
+//							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//								System.err.println("Error when logging '" + logConfig.getName() + "': " + logConfig.getErrNo());
+//							}		                    
 						}
 
 						public void logConfigStarted(LogConfig logConfig) {
-							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-								String msg = "";
-								if(logConfig.isStarted()) {
-									msg = "' started";
-								} else {
-									msg = "' stopped";
-								}
-								System.out.println("LogConfig '" + logConfig.getName() + msg);
-							}
+//							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//								String msg = "";
+//								if(logConfig.isStarted()) {
+//									msg = "' started";
+//								} else {
+//									msg = "' stopped";
+//								}
+//								System.out.println("LogConfig '" + logConfig.getName() + msg);
+//							}
 						}
 
 						public void logDataReceived(LogConfig logConfig, Map<String, Number> data, int timestamp) {
 							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-								System.out.println("timestamp: " + timestamp);
+//								System.out.println("timestamp: " + timestamp);
 								List<Number> bodyMeasures = new ArrayList<>();
 								bodyMeasures.add(data.get("pm.state"));
 								bodyMeasures.add(data.get("range.front"));
@@ -130,13 +123,13 @@ public class WholeBodySensor extends SensoryCodelet {
 								bodyMeasures.add(data.get("range.up"));
 								bodyMeasures.add(data.get("range.zrange"));
 								wholeBodyMO.setI(bodyMeasures);                 
-								System.out.println("Battery state: "+bodyMeasures.get(0));
-								System.out.println("Front: "+bodyMeasures.get(1));
-								System.out.println("Back: "+bodyMeasures.get(2));
-								System.out.println("Left: "+bodyMeasures.get(3));
-								System.out.println("Right: "+bodyMeasures.get(4));
-								System.out.println("Up: "+bodyMeasures.get(5));
-								System.out.println("Down: "+bodyMeasures.get(6));
+//								System.out.println("Battery state: "+bodyMeasures.get(0));
+//								System.out.println("Front: "+bodyMeasures.get(1));
+//								System.out.println("Back: "+bodyMeasures.get(2));
+//								System.out.println("Left: "+bodyMeasures.get(3));
+//								System.out.println("Right: "+bodyMeasures.get(4));
+//								System.out.println("Up: "+bodyMeasures.get(5));
+//								System.out.println("Down: "+bodyMeasures.get(6));
 							}		                  
 						}
 					});
