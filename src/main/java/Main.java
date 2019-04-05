@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.unicamp.meca.mind.MecaMind;
+import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
-import main.java.codelets.system1.sensory.BatterySensor;
-import main.java.codelets.system1.sensory.MultirangerSensor;
+import main.java.codelets.system1.sensory.WholeBodySensor;
 import se.bitcraze.crazyflie.lib.crazyflie.ConnectionAdapter;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
 import se.bitcraze.crazyflie.lib.crazyradio.ConnectionData;
@@ -20,7 +20,7 @@ import se.bitcraze.crazyflie.lib.usb.UsbLinkJava;
  *
  */
 public class Main {
-	
+
 	private Crazyflie crazyflie;
 
 	public Main(ConnectionData connectionData) {
@@ -28,41 +28,41 @@ public class Main {
 		crazyflie = new Crazyflie(new RadioDriver(new UsbLinkJava()));
 		crazyflie.getDriver().addConnectionListener(connectionAdapter);
 		System.out.println("Connecting to " + connectionData);
-        // Try to connect to the Crazyflie
+		// Try to connect to the Crazyflie
 		crazyflie.setConnectionData(connectionData);
 		crazyflie.connect();
 	}
-	
+
 	private ConnectionAdapter connectionAdapter = new ConnectionAdapter() {
-		
-        public void connected() {
-            System.out.println("CONNECTED");           
-        }
-        
-        public void disconnected() {
-            System.out.println("DISCONNECTED");
-        }
-        
-        public void connectionFailed(String msg) {
-            System.out.println("CONNECTION FAILED - Msg: " + msg);
-        }
-        
-        public void connectionLost(String connectionInfo) {
-            System.out.println("CONNECTION LOST: " +  connectionInfo);
-        }
-        
-        @Override
-        public void setupFinished() {
-            System.out.println("SETUP FINISHED");
-            
-            instantiateCrazyflieMECAMind();
-        }
+
+		public void connected() {
+			System.out.println("CONNECTED");           
+		}
+
+		public void disconnected() {
+			System.out.println("DISCONNECTED");
+		}
+
+		public void connectionFailed(String msg) {
+			System.out.println("CONNECTION FAILED - Msg: " + msg);
+		}
+
+		public void connectionLost(String connectionInfo) {
+			System.out.println("CONNECTION LOST: " +  connectionInfo);
+		}
+
+		@Override
+		public void setupFinished() {
+			System.out.println("SETUP FINISHED");
+
+			instantiateCrazyflieMECAMind();
+		}
 	};
-	
+
 	private void instantiateCrazyflieMECAMind() {
-		
+
 		MecaMind mecaMind = new MecaMind("Mind of the Crazyflie");
-		
+
 		/* Sensory codelets we are about to create for this Crazyflie*/
 		List<SensoryCodelet> sensoryCodelets = new ArrayList<>();	
 		/* Lists that will hold the codelets ids. This is important 
@@ -70,20 +70,27 @@ public class Main {
 		 * codelets according to the reference architecture
 		 * */
 		ArrayList<String> sensoryCodeletsIds = new ArrayList<>();
+
+		WholeBodySensor bodySensor = new WholeBodySensor("BodySensor", crazyflie);
+		sensoryCodelets.add(bodySensor);
+		sensoryCodeletsIds.add(bodySensor.getId());
 		
-		BatterySensor batterySensor = new BatterySensor("BatterySensor", crazyflie);
-		sensoryCodelets.add(batterySensor);
-		sensoryCodeletsIds.add(batterySensor.getId());
+		/*
+		 * Then, we create the Situation Perceptual codelet. 
+		 * This codelet must receive the ids of the sensory codelets,
+		 * in order to be glued to them, receiving  their inputs.
+		 */
+		List<PerceptualCodelet> perceptualCodelets = new ArrayList<>();
+		ArrayList<String> perceptualCodeletsIds = new ArrayList<>();
 		
-		MultirangerSensor multirangerSensor = new MultirangerSensor("MultirangerSensor", crazyflie);
-		sensoryCodelets.add(multirangerSensor);
-		sensoryCodeletsIds.add(multirangerSensor.getId());
 		
+		
+
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
 		 */
 		mecaMind.setSensoryCodelets(sensoryCodelets);
-		
+
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
 		 * is responsible for wiring the MecaMind altogether according to the reference architecture, including
@@ -94,12 +101,12 @@ public class Main {
 		 * architecture.
 		 */			
 		mecaMind.mountMecaMind();
-		
+
 		/*
 		 * Starting the mind
 		 */
 		mecaMind.start();
-		
+
 	}
 
 	/**
