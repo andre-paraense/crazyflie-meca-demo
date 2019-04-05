@@ -4,11 +4,15 @@
 package main.java;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.mind.MecaMind;
+import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
+import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
 import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
 import main.java.codelets.system1.sensory.WholeBodySensor;
 import se.bitcraze.crazyflie.lib.crazyflie.ConnectionAdapter;
@@ -86,7 +90,28 @@ public class Main {
 		
 		SituationPerceptualCodelet situationPerceptualCodelet = new SituationPerceptualCodelet("SituationPerceptualCodelet", sensoryCodeletsIds);
 		perceptualCodeletsIds.add(situationPerceptualCodelet.getId());
-		perceptualCodelets.add(situationPerceptualCodelet);		
+		perceptualCodelets.add(situationPerceptualCodelet);
+		
+		/*
+		 * Next step is to create the motivational codelets.
+		 * This codelets must receive the ids of the sensory codelets,
+		 * in order to be glued to them, receiving  their inputs.
+		 */
+		List<MotivationalCodelet> motivationalCodelets = new ArrayList<>();
+		ArrayList<String> energyConservationMotivationalCodeletIds = new ArrayList<>();
+		
+		EnergyConservationMotivationalCodelet energyConservationMotivationalCodelet;
+		
+		try {
+			energyConservationMotivationalCodelet = new EnergyConservationMotivationalCodelet("EnergyConservationMotivationalCodelet", 0, 0.5, 0.9677, sensoryCodeletsIds, new HashMap<String, Double>());
+			energyConservationMotivationalCodeletIds.add(energyConservationMotivationalCodelet.getId());
+			motivationalCodelets.add(energyConservationMotivationalCodelet);
+			
+		} catch (CodeletActivationBoundsException e) {
+			e.printStackTrace();
+		}
+		
+		
 		
 
 		/*
@@ -94,6 +119,7 @@ public class Main {
 		 */
 		mecaMind.setSensoryCodelets(sensoryCodelets);
 		mecaMind.setPerceptualCodelets(perceptualCodelets);
+		mecaMind.setMotivationalCodelets(motivationalCodelets);
 
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
