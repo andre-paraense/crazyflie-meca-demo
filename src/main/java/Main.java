@@ -10,9 +10,11 @@ import java.util.List;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.mind.MecaMind;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
+import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
+import main.java.codelets.system1.motor.MotionCommanderActuator;
 import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
 import main.java.codelets.system1.sensory.WholeBodySensor;
 import se.bitcraze.crazyflie.lib.crazyflie.ConnectionAdapter;
@@ -81,6 +83,16 @@ public class Main {
 		sensoryCodeletsIds.add(bodySensor.getId());
 		
 		/*
+		 * Now it is a good time to create the motor codelets, before the Behavioral ones,
+		 * because the behavioral will need the motor ids to be positioned between them
+		 * and the rest of the architecture.
+		 */
+		List<MotorCodelet> motorCodelets = new ArrayList<>();	
+		
+		MotionCommanderActuator motionCommanderActuator = new MotionCommanderActuator("MotionCommanderActuator", crazyflie);
+		motorCodelets.add(motionCommanderActuator);
+		
+		/*
 		 * Then, we create the Situation Perceptual codelet. 
 		 * This codelet must receive the ids of the sensory codelets,
 		 * in order to be glued to them, receiving  their inputs.
@@ -111,13 +123,12 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		
-		
 
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
 		 */
 		mecaMind.setSensoryCodelets(sensoryCodelets);
+		mecaMind.setMotorCodelets(motorCodelets);
 		mecaMind.setPerceptualCodelets(perceptualCodelets);
 		mecaMind.setMotivationalCodelets(motivationalCodelets);
 
