@@ -7,12 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
+import br.unicamp.cst.util.MindViewer;
 import br.unicamp.meca.mind.MecaMind;
+import br.unicamp.meca.system1.codelets.MotivationalBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
+import br.unicamp.meca.system1.codelets.RandomBehavioralCodelet;
+import br.unicamp.meca.system1.codelets.ReactiveBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
+import main.java.codelets.behavioral.random.RandomMove;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
 import main.java.codelets.system1.motor.MotionCommanderActuator;
 import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
@@ -123,6 +129,22 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		/*
+		 * Last step is to create the behavioral codelets,
+		 * all three random, reactive and motivational types.
+		 * They receive the ids of the perceptual codelets and
+		 * motor codelets, in order to be glued to them, according
+		 * to the reference architecture.		
+		 */
+		List<RandomBehavioralCodelet> randomBehavioralCodelets = new ArrayList<>();
+		
+		RandomMove randomMove = new RandomMove("RandomMove", motionCommanderActuator.getId(), null);
+		randomBehavioralCodelets.add(randomMove);
+		
+		List<ReactiveBehavioralCodelet> reactiveBehavioralCodelets = new ArrayList<>();
+		
+		List<MotivationalBehavioralCodelet> motivationalBehavioralCodelets = new ArrayList<>();
+		
 
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
@@ -131,6 +153,9 @@ public class Main {
 		mecaMind.setMotorCodelets(motorCodelets);
 		mecaMind.setPerceptualCodelets(perceptualCodelets);
 		mecaMind.setMotivationalCodelets(motivationalCodelets);
+		mecaMind.setRandomBehavioralCodelets(randomBehavioralCodelets);
+		mecaMind.setReactiveBehavioralCodelets(reactiveBehavioralCodelets);
+		mecaMind.setMotivationalBehavioralCodelets(motivationalBehavioralCodelets);
 
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
@@ -147,6 +172,19 @@ public class Main {
 		 * Starting the mind
 		 */
 		mecaMind.start();
+		
+		/*
+		 * Instead of inserting the sensory codelets in the
+		 * CST visualization tool, let's insert the behaviroal
+		 * codelets, which activation has a pivotal role.
+		 */
+		List<Codelet> listOfCodelets = new ArrayList<>();
+		listOfCodelets.addAll(mecaMind.getRandomBehavioralCodelets());
+		listOfCodelets.addAll(mecaMind.getReactiveBehavioralCodelets());
+		listOfCodelets.addAll(mecaMind.getMotivationalBehavioralCodelets());
+
+		MindViewer mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
+		mv.setVisible(true);
 
 	}
 
