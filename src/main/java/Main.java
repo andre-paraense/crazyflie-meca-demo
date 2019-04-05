@@ -9,6 +9,7 @@ import java.util.List;
 import br.unicamp.meca.mind.MecaMind;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import main.java.codelets.system1.sensory.BatterySensor;
+import main.java.codelets.system1.sensory.MultirangerSensor;
 import se.bitcraze.crazyflie.lib.crazyflie.ConnectionAdapter;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
 import se.bitcraze.crazyflie.lib.crazyradio.ConnectionData;
@@ -54,11 +55,11 @@ public class Main {
         public void setupFinished() {
             System.out.println("SETUP FINISHED");
             
-            mountCrazyflieMECAMind();
+            instantiateCrazyflieMECAMind();
         }
 	};
 	
-	private void mountCrazyflieMECAMind() {
+	private void instantiateCrazyflieMECAMind() {
 		
 		MecaMind mecaMind = new MecaMind("Mind of the Crazyflie");
 		
@@ -73,6 +74,10 @@ public class Main {
 		BatterySensor batterySensor = new BatterySensor("BatterySensor", crazyflie);
 		sensoryCodelets.add(batterySensor);
 		sensoryCodeletsIds.add(batterySensor.getId());
+		
+		MultirangerSensor multirangerSensor = new MultirangerSensor("MultirangerSensor", crazyflie);
+		sensoryCodelets.add(multirangerSensor);
+		sensoryCodeletsIds.add(multirangerSensor.getId());
 		
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
