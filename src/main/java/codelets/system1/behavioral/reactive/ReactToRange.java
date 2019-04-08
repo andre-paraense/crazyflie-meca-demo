@@ -54,7 +54,7 @@ public class ReactToRange extends ReactiveBehavioralCodelet {
 	@Override
 	public void calculateActivation() {
 		
-		double activation = 0.0d;
+		double activation = 0.1d;
 		directionIndex = -1;
 		
 		if(worldSituation!=null && worldSituation.getI()!=null && worldSituation.getI() instanceof ArrayList){
