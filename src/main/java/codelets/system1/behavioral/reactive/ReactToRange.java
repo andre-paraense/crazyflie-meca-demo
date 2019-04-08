@@ -23,7 +23,7 @@ public class ReactToRange extends ReactiveBehavioralCodelet {
 	
 	private int directionIndex = -1;
 	
-	private final static float ESCAPE_VELOCITY = 0.5f;
+	private final static float ESCAPE_VELOCITY = 0.3f;
 	
 	private final static int FRONT = 1;	
 	private final static int BACK = 2;
@@ -105,12 +105,12 @@ public class ReactToRange extends ReactiveBehavioralCodelet {
 			break;
 		case LEFT:
 			velocitiesAxis.add(0.0f);
-			velocitiesAxis.add(-1.0f*ESCAPE_VELOCITY);
+			velocitiesAxis.add(ESCAPE_VELOCITY);
 			velocitiesAxis.add(0.0f);
 			break;
 		case RIGHT:
 			velocitiesAxis.add(0.0f);
-			velocitiesAxis.add(ESCAPE_VELOCITY);
+			velocitiesAxis.add(-1.0f*ESCAPE_VELOCITY);
 			velocitiesAxis.add(0.0f);
 			break;
 		case UP:

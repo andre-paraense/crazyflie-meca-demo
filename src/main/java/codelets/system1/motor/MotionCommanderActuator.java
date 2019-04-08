@@ -66,7 +66,7 @@ public class MotionCommanderActuator extends MotorCodelet {
 			
 			if(velocitiesAxis != null && velocitiesAxis.size() > 0 ) {	
 				try {
-					motionCommander.startLinearMotion(velocitiesAxis.get(0), velocitiesAxis.get(1), velocitiesAxis.get(2));
+					motionCommander.startLinearMotion(velocitiesAxis.get(0), velocitiesAxis.get(1), velocitiesAxis.get(2));					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}		

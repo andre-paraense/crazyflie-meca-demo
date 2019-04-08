@@ -48,7 +48,7 @@ public class RandomMove extends RandomBehavioralCodelet {
 
 			activation = rangeMin + (rangeMax - rangeMin) * random.nextDouble();
 
-			if(activation >= 0.99d) // Very hard for the random phase codelet to prevail
+			if(activation >= 0.999d) // Very hard for the random phase codelet to prevail
 				activation = 1.0d;
 			else
 				activation = 0.0d;	
@@ -76,17 +76,23 @@ public class RandomMove extends RandomBehavioralCodelet {
 
 		List<Float> velocitiesAxis = new ArrayList<>();
 
-		for(int i = 0; i < 3; i++) {
-
-			float rangeMin = 0.0f;
-			float rangeMax = 0.5f;
-
-
-			float velocity = rangeMin + (rangeMax - rangeMin) * random.nextFloat();
-			if(random.nextDouble() > 0.5d) {
-				velocity *= -1;
-			}
-
+		float velocity = 0.3f;
+		
+		if(random.nextDouble() > 0.5d) {
+			velocity *= -1.0f;
+		}
+		
+		if(random.nextDouble() > 0.7d) {
+			velocitiesAxis.add(velocity);
+			velocitiesAxis.add(0.0f);
+			velocitiesAxis.add(0.0f);
+		} else if(random.nextDouble() > 0.3d) {
+			velocitiesAxis.add(0.0f);
+			velocitiesAxis.add(velocity);
+			velocitiesAxis.add(0.0f);
+		}else {
+			velocitiesAxis.add(0.0f);
+			velocitiesAxis.add(0.0f);
 			velocitiesAxis.add(velocity);
 		}
 
