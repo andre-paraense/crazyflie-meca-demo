@@ -16,7 +16,7 @@ import br.unicamp.meca.system1.codelets.PerceptualCodelet;
  */
 public class SituationPerceptualCodelet extends PerceptualCodelet {
 	
-	public static final float SAFE_RANGE = 10.0f;
+	public static final float SAFE_RANGE = 100.0f;
 	
     private ArrayList<Memory> sensoryMemories = new ArrayList<Memory>();
 
