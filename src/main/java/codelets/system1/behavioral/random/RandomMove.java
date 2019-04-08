@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.java.codelets.behavioral.random;
+package main.java.codelets.system1.behavioral.random;
 
 import java.util.ArrayList;
 import java.util.List;

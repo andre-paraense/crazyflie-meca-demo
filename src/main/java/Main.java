@@ -18,7 +18,7 @@ import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 import br.unicamp.meca.system1.codelets.RandomBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.ReactiveBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
-import main.java.codelets.behavioral.random.RandomMove;
+import main.java.codelets.system1.behavioral.random.RandomMove;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
 import main.java.codelets.system1.motor.MotionCommanderActuator;
 import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
