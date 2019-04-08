@@ -48,7 +48,7 @@ public class RandomMove extends RandomBehavioralCodelet {
 
 			activation = rangeMin + (rangeMax - rangeMin) * random.nextDouble();
 
-			if(activation >= 0.999d) // Very hard for the random phase codelet to prevail
+			if(activation >= 0.99d) // Very hard for the random phase codelet to prevail
 				activation = 1.0d;
 			else
 				activation = 0.0d;	
