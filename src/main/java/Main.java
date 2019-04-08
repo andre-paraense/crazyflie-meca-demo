@@ -11,13 +11,14 @@ import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.util.MindViewer;
 import br.unicamp.meca.mind.MecaMind;
-import br.unicamp.meca.system1.codelets.MotivationalBehavioralCodelet;
+import br.unicamp.meca.models.ActionSequencePlan;
+import br.unicamp.meca.system1.codelets.ActionCodelet;
+import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
-import br.unicamp.meca.system1.codelets.ReactiveBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
-import main.java.codelets.system1.behavioral.motivational.ConserveEnergy;
+import main.java.codelets.system1.behavioral.motivational.LandAndStop;
 import main.java.codelets.system1.behavioral.reactive.ReactToRange;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
 import main.java.codelets.system1.motor.MotionCommanderActuator;
@@ -143,17 +144,19 @@ public class Main {
 		 * to the reference architecture.		
 		 */
 		
-		List<ReactiveBehavioralCodelet> reactiveBehavioralCodelets = new ArrayList<>();
+		List<ActionCodelet> reactiveBehavioralCodelets = new ArrayList<>();
 		
 		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds,  motionCommanderActuator.getId(), null);
 		reactToRange.setTimeStep(TIME_STEP);
 		reactiveBehavioralCodelets.add(reactToRange);
 		
-		List<MotivationalBehavioralCodelet> motivationalBehavioralCodelets = new ArrayList<>();
+		List<BehaviorCodelet> motivationalBehavioralCodelets = new ArrayList<>();
 		
-		ConserveEnergy conserveEnergy = new ConserveEnergy("ConserveEnergy", motionCommanderActuator.getId(), energyConservationMotivationalCodeletIds, null);
-		conserveEnergy.setTimeStep(TIME_STEP);
-		motivationalBehavioralCodelets.add(conserveEnergy);
+		ActionSequencePlan landAndStopSequencePlan = new ActionSequencePlan(new String[] {"Land","Stop"});
+		
+		LandAndStop landAndStop = new LandAndStop("LandAndStop", perceptualCodeletsIds, energyConservationMotivationalCodeletIds, null,landAndStopSequencePlan);
+		landAndStop.setTimeStep(TIME_STEP);
+		motivationalBehavioralCodelets.add(landAndStop);
 
 		/*
 		 * Inserting the System 1 codelets inside MECA mind

@@ -9,13 +9,13 @@ import java.util.List;
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
-import br.unicamp.meca.system1.codelets.ReactiveBehavioralCodelet;
+import br.unicamp.meca.system1.codelets.ActionCodelet;
 
 /**
  * @author andre
  *
  */
-public class ReactToRange extends ReactiveBehavioralCodelet {
+public class ReactToRange extends ActionCodelet {
 	
 	private Memory worldSituation;
 	
