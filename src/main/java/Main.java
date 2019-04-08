@@ -15,11 +15,9 @@ import br.unicamp.meca.system1.codelets.MotivationalBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
-import br.unicamp.meca.system1.codelets.RandomBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.ReactiveBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import main.java.codelets.system1.behavioral.motivational.ConserveEnergy;
-import main.java.codelets.system1.behavioral.random.RandomMove;
 import main.java.codelets.system1.behavioral.reactive.ReactToRange;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
 import main.java.codelets.system1.motor.MotionCommanderActuator;
@@ -144,11 +142,6 @@ public class Main {
 		 * motor codelets, in order to be glued to them, according
 		 * to the reference architecture.		
 		 */
-		List<RandomBehavioralCodelet> randomBehavioralCodelets = new ArrayList<>();
-		
-		RandomMove randomMove = new RandomMove("RandomMove", motionCommanderActuator.getId(), null);
-		randomMove.setTimeStep(TIME_STEP);
-		randomBehavioralCodelets.add(randomMove);
 		
 		List<ReactiveBehavioralCodelet> reactiveBehavioralCodelets = new ArrayList<>();
 		
@@ -169,7 +162,6 @@ public class Main {
 		mecaMind.setMotorCodelets(motorCodelets);
 		mecaMind.setPerceptualCodelets(perceptualCodelets);
 		mecaMind.setMotivationalCodelets(motivationalCodelets);
-		mecaMind.setRandomBehavioralCodelets(randomBehavioralCodelets);
 		mecaMind.setReactiveBehavioralCodelets(reactiveBehavioralCodelets);
 		mecaMind.setMotivationalBehavioralCodelets(motivationalBehavioralCodelets);
 
@@ -195,7 +187,6 @@ public class Main {
 		 * codelets, which activation has a pivotal role.
 		 */
 		List<Codelet> listOfCodelets = new ArrayList<>();
-		listOfCodelets.addAll(mecaMind.getRandomBehavioralCodelets());
 		listOfCodelets.addAll(mecaMind.getReactiveBehavioralCodelets());
 		listOfCodelets.addAll(mecaMind.getMotivationalBehavioralCodelets());
 
