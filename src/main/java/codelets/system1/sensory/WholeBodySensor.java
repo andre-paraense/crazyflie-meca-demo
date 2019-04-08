@@ -32,8 +32,7 @@ public class WholeBodySensor extends SensoryCodelet {
 		super(id);
 		this.crazyflie = crazyflie;
 
-		int periodInMs = 100;
-		lc = new LogConfig("BodySensors", periodInMs);
+		lc = new LogConfig("BodySensors", (int) this.timeStep);
 		lc.addVariable("pm.state", VariableType.INT16_T);// [BATTERY, CHARGING, CHARGED, LOW_POWER] = list(range(4))
 		lc.addVariable("range.front", VariableType.FLOAT);
 		lc.addVariable("range.back", VariableType.FLOAT);

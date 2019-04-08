@@ -75,6 +75,8 @@ public class Main {
 	};
 
 	private void instantiateCrazyflieMECAMind() {
+		
+		final long TIME_STEP = 20L;
 
 		MecaMind mecaMind = new MecaMind("Mind of the Crazyflie");
 
@@ -87,6 +89,7 @@ public class Main {
 		ArrayList<String> sensoryCodeletsIds = new ArrayList<>();
 
 		WholeBodySensor bodySensor = new WholeBodySensor("BodySensor", crazyflie);
+		bodySensor.setTimeStep(TIME_STEP);
 		sensoryCodelets.add(bodySensor);
 		sensoryCodeletsIds.add(bodySensor.getId());
 		
@@ -98,6 +101,7 @@ public class Main {
 		List<MotorCodelet> motorCodelets = new ArrayList<>();	
 		
 		MotionCommanderActuator motionCommanderActuator = new MotionCommanderActuator("MotionCommanderActuator", crazyflie);
+		motionCommanderActuator.setTimeStep(TIME_STEP);
 		motorCodelets.add(motionCommanderActuator);
 		
 		/*
@@ -109,6 +113,7 @@ public class Main {
 		ArrayList<String> perceptualCodeletsIds = new ArrayList<>();
 		
 		SituationPerceptualCodelet situationPerceptualCodelet = new SituationPerceptualCodelet("SituationPerceptualCodelet", sensoryCodeletsIds);
+		situationPerceptualCodelet.setTimeStep(TIME_STEP);
 		perceptualCodeletsIds.add(situationPerceptualCodelet.getId());
 		perceptualCodelets.add(situationPerceptualCodelet);
 		
@@ -124,6 +129,7 @@ public class Main {
 		
 		try {
 			energyConservationMotivationalCodelet = new EnergyConservationMotivationalCodelet("EnergyConservationMotivationalCodelet", 0, 0.5, 0.9677, sensoryCodeletsIds, new HashMap<String, Double>());
+			energyConservationMotivationalCodelet.setTimeStep(TIME_STEP);
 			energyConservationMotivationalCodeletIds.add(energyConservationMotivationalCodelet.getId());
 			motivationalCodelets.add(energyConservationMotivationalCodelet);
 			
@@ -141,16 +147,19 @@ public class Main {
 		List<RandomBehavioralCodelet> randomBehavioralCodelets = new ArrayList<>();
 		
 		RandomMove randomMove = new RandomMove("RandomMove", motionCommanderActuator.getId(), null);
+		randomMove.setTimeStep(TIME_STEP);
 		randomBehavioralCodelets.add(randomMove);
 		
 		List<ReactiveBehavioralCodelet> reactiveBehavioralCodelets = new ArrayList<>();
 		
 		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds,  motionCommanderActuator.getId(), null);
+		reactToRange.setTimeStep(TIME_STEP);
 		reactiveBehavioralCodelets.add(reactToRange);
 		
 		List<MotivationalBehavioralCodelet> motivationalBehavioralCodelets = new ArrayList<>();
 		
 		ConserveEnergy conserveEnergy = new ConserveEnergy("ConserveEnergy", motionCommanderActuator.getId(), energyConservationMotivationalCodeletIds, null);
+		conserveEnergy.setTimeStep(TIME_STEP);
 		motivationalBehavioralCodelets.add(conserveEnergy);
 
 		/*
