@@ -19,6 +19,7 @@ import br.unicamp.meca.system1.codelets.RandomBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.ReactiveBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import main.java.codelets.system1.behavioral.random.RandomMove;
+import main.java.codelets.system1.behavioral.reactive.ReactToRange;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
 import main.java.codelets.system1.motor.MotionCommanderActuator;
 import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
@@ -142,6 +143,9 @@ public class Main {
 		randomBehavioralCodelets.add(randomMove);
 		
 		List<ReactiveBehavioralCodelet> reactiveBehavioralCodelets = new ArrayList<>();
+		
+		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds,  motionCommanderActuator.getId(), null);
+		reactiveBehavioralCodelets.add(reactToRange);
 		
 		List<MotivationalBehavioralCodelet> motivationalBehavioralCodelets = new ArrayList<>();
 		
