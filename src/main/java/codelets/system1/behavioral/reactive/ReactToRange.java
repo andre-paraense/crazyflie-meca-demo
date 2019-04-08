@@ -77,8 +77,8 @@ public class ReactToRange extends ReactiveBehavioralCodelet {
 			if(activation<0.0d)
 				activation=0.0d;
 
-			if(activation>1.0d)
-				activation=1.0d;
+			if(activation>0.95d)
+				activation=0.95d;
 
 			this.setActivation(activation);
 
