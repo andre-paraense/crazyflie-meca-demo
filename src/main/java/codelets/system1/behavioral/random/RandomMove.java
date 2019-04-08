@@ -76,7 +76,7 @@ public class RandomMove extends RandomBehavioralCodelet {
 
 		List<Float> velocitiesAxis = new ArrayList<>();
 
-		float velocity = 0.3f;
+		float velocity = 0.5f;
 		
 		if(random.nextDouble() > 0.5d) {
 			velocity *= -1.0f;

@@ -23,7 +23,7 @@ public class ReactToRange extends ReactiveBehavioralCodelet {
 	
 	private int directionIndex = -1;
 	
-	private final static float ESCAPE_VELOCITY = 0.3f;
+	private final static float ESCAPE_VELOCITY = 0.5f;
 	
 	private final static int FRONT = 1;	
 	private final static int BACK = 2;
@@ -54,7 +54,8 @@ public class ReactToRange extends ReactiveBehavioralCodelet {
 	@Override
 	public void calculateActivation() {
 		
-		double activation = 0.0d;	
+		double activation = 0.0d;
+		directionIndex = -1;
 		
 		if(worldSituation!=null && worldSituation.getI()!=null && worldSituation.getI() instanceof ArrayList){
 			
@@ -64,7 +65,7 @@ public class ReactToRange extends ReactiveBehavioralCodelet {
 				
 				float rangeActivation = (float) bodyPerceptions.get(i);
 				
-				if(rangeActivation > activation) {
+				if(rangeActivation > 0.8f && rangeActivation > activation) {
 					activation = rangeActivation;
 					directionIndex = i;
 				}				
@@ -125,7 +126,7 @@ public class ReactToRange extends ReactiveBehavioralCodelet {
 			break;
 
 		default:
-			velocitiesAxis.add(ESCAPE_VELOCITY);
+			velocitiesAxis.add(0.0f);
 			velocitiesAxis.add(0.0f);
 			velocitiesAxis.add(0.0f);
 			break;
