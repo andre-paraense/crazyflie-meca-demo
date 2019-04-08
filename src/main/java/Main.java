@@ -76,7 +76,7 @@ public class Main {
 
 	private void instantiateCrazyflieMECAMind() {
 		
-		final long TIME_STEP = 20L;
+		final long TIME_STEP = 10L;
 
 		MecaMind mecaMind = new MecaMind("Mind of the Crazyflie");
 
