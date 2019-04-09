@@ -17,10 +17,6 @@ import br.unicamp.meca.system1.codelets.ActionCodelet;
  */
 public class ReactToRange extends ActionCodelet {
 	
-	private Memory worldSituation;
-	
-	private Memory motionCommandMemory;
-	
 	private int directionIndex = -1;
 	
 	private final static float ESCAPE_VELOCITY = 0.5f;
@@ -39,37 +35,30 @@ public class ReactToRange extends ActionCodelet {
 	}
 
 	@Override
-	public void accessMemoryObjects() {
-		
-		int index=0;
-		
-		if(worldSituation==null && perceptualCodeletsIds!=null && perceptualCodeletsIds.size()>0 && perceptualCodeletsIds.get(0)!=null)
-			worldSituation = this.getInput(perceptualCodeletsIds.get(0), index); 
-
-		if(motionCommandMemory==null && motorCodeletId!=null)
-			motionCommandMemory = this.getOutput(motorCodeletId, index);
-
-	}
-
-	@Override
-	public void calculateActivation() {
+	public void calculateActivation(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer) {
 		
 		double activation = 0.1d;
 		directionIndex = -1;
 		
-		if(worldSituation!=null && worldSituation.getI()!=null && worldSituation.getI() instanceof ArrayList){
+		if(perceptualMemories != null && perceptualMemories.size() > 0) {
 			
-			List<Number> bodyPerceptions = (List<Number>) worldSituation.getI();
+			Memory worldSituation = perceptualMemories.get(0);
 			
-			for(int i =1; i < bodyPerceptions.size(); i++) {
+			if(worldSituation!=null && worldSituation.getI()!=null && worldSituation.getI() instanceof ArrayList){
 				
-				float rangeActivation = (float) bodyPerceptions.get(i);
+				List<Number> bodyPerceptions = (List<Number>) worldSituation.getI();
 				
-				if(rangeActivation > 0.8f && rangeActivation > activation) {
-					activation = rangeActivation;
-					directionIndex = i;
-				}				
+				for(int i =1; i < bodyPerceptions.size(); i++) {
+					
+					float rangeActivation = (float) bodyPerceptions.get(i);
+					
+					if(rangeActivation > 0.8f && rangeActivation > activation) {
+						activation = rangeActivation;
+						directionIndex = i;
+					}				
+				}
 			}
+			
 		}
 		
 		try 
@@ -89,7 +78,7 @@ public class ReactToRange extends ActionCodelet {
 	}
 
 	@Override
-	public void proc() {
+	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer, Memory motorMemory) {
 		
 		List<Float> velocitiesAxis = new ArrayList<>();
 		
@@ -132,6 +121,6 @@ public class ReactToRange extends ActionCodelet {
 			break;
 		}
 		
-		((MemoryContainer) motionCommandMemory).setI(velocitiesAxis,getActivation(),id);
+		((MemoryContainer) motorMemory).setI(velocitiesAxis,getActivation(),id);
 	}
 }
