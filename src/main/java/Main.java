@@ -144,19 +144,19 @@ public class Main {
 		 * to the reference architecture.		
 		 */
 		
-		List<ActionCodelet> reactiveBehavioralCodelets = new ArrayList<>();
+		List<ActionCodelet> actionCodelets = new ArrayList<>();
 		
 		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds,  motionCommanderActuator.getId(), null);
 		reactToRange.setTimeStep(TIME_STEP);
-		reactiveBehavioralCodelets.add(reactToRange);
+		actionCodelets.add(reactToRange);
 		
-		List<BehaviorCodelet> motivationalBehavioralCodelets = new ArrayList<>();
+		List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
 		
 		ActionSequencePlan landAndStopSequencePlan = new ActionSequencePlan(new String[] {"Land","Stop"});
 		
 		LandAndStop landAndStop = new LandAndStop("LandAndStop", perceptualCodeletsIds, energyConservationMotivationalCodeletIds, null,landAndStopSequencePlan);
 		landAndStop.setTimeStep(TIME_STEP);
-		motivationalBehavioralCodelets.add(landAndStop);
+		behaviorCodelets.add(landAndStop);
 
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
@@ -165,8 +165,8 @@ public class Main {
 		mecaMind.setMotorCodelets(motorCodelets);
 		mecaMind.setPerceptualCodelets(perceptualCodelets);
 		mecaMind.setMotivationalCodelets(motivationalCodelets);
-		mecaMind.setReactiveBehavioralCodelets(reactiveBehavioralCodelets);
-		mecaMind.setMotivationalBehavioralCodelets(motivationalBehavioralCodelets);
+		mecaMind.setActionCodelets(actionCodelets);
+		mecaMind.setBehaviorCodelets(behaviorCodelets);
 
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
@@ -190,8 +190,8 @@ public class Main {
 		 * codelets, which activation has a pivotal role.
 		 */
 		List<Codelet> listOfCodelets = new ArrayList<>();
-		listOfCodelets.addAll(mecaMind.getReactiveBehavioralCodelets());
-		listOfCodelets.addAll(mecaMind.getMotivationalBehavioralCodelets());
+		listOfCodelets.addAll(mecaMind.getActionCodelets());
+		listOfCodelets.addAll(mecaMind.getBehaviorCodelets());
 
 		MindViewer mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
 		mv.setVisible(true);
