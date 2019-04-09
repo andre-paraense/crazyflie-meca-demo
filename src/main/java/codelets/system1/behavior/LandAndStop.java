@@ -18,12 +18,11 @@ public class LandAndStop extends BehaviorCodelet {
 	public LandAndStop(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds,
 			String soarCodeletId, ActionSequencePlan actionSequencePlan) {
 		
-		super(id, perceptualCodeletsIds, motivationalCodeletsIds, soarCodeletId,actionSequencePlan);
-		
+		super(id, perceptualCodeletsIds, motivationalCodeletsIds, soarCodeletId,actionSequencePlan);		
 	}
 
 	@Override
-	public void trackActionSequencePlan(Memory worldSituation, ActionSequencePlan actionSequencePlan) {
+	public void trackActionSequencePlan(ArrayList<Memory> perceptualMemories, ActionSequencePlan actionSequencePlan) {
 		// TODO Auto-generated method stub
 		
 	}
