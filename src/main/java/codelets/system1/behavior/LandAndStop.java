@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.java.codelets.system1.behavioral.motivational;
+package main.java.codelets.system1.behavior;
 
 import java.util.ArrayList;
 
