@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import br.unicamp.cst.core.entities.Memory;
-import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
 import se.bitcraze.crazyflie.lib.log.LogConfig;
@@ -22,8 +21,6 @@ import se.bitcraze.crazyflie.lib.toc.VariableType;
 public class MultirangerSensor extends SensoryCodelet {
 
 	private Crazyflie crazyflie;
-
-	private Memory multirangerMO;
 
 	private LogConfig lc;
 
@@ -42,29 +39,7 @@ public class MultirangerSensor extends SensoryCodelet {
 	}
 
 	@Override
-	public void accessMemoryObjects() {
-
-		int index = 0;
-
-		if(multirangerMO == null)
-			multirangerMO = this.getOutput(id, index);	
-
-	}
-
-	@Override
-	public void calculateActivation() {
-		try{
-
-			setActivation(0.0d);
-
-		} catch (CodeletActivationBoundsException e) {
-
-			e.printStackTrace();
-		}	
-	}
-
-	@Override
-	public void proc() {
+	public void proc(Memory sensoryMemory) {
 
 		if(crazyflie != null && crazyflie.isConnected()) {
 
@@ -118,7 +93,7 @@ public class MultirangerSensor extends SensoryCodelet {
 								multirangerMeasures.add(data.get("range.right"));
 								multirangerMeasures.add(data.get("range.up"));
 								multirangerMeasures.add(data.get("range.zrange"));
-								multirangerMO.setI(multirangerMeasures);                 
+								sensoryMemory.setI(multirangerMeasures);                 
 								System.out.println("Front: "+multirangerMeasures.get(0));
 								System.out.println("Back: "+multirangerMeasures.get(1));
 								System.out.println("Left: "+multirangerMeasures.get(2));
@@ -133,10 +108,10 @@ public class MultirangerSensor extends SensoryCodelet {
 					logg.start(lc);
 				}
 			} else {
-				multirangerMO.setI(null);
+				sensoryMemory.setI(null);
 			}
 		}else {
-			multirangerMO.setI(null);
+			sensoryMemory.setI(null);
 		}
 	}
 }
