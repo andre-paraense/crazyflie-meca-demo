@@ -37,7 +37,7 @@ public class ReactToRange extends ActionCodelet {
 	@Override
 	public void calculateActivation(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer) {
 		
-		double activation = 0.0d;
+		double activation = 0.1d;
 		directionIndex = -1;
 		
 		if(perceptualMemories != null && perceptualMemories.size() > 0) {
@@ -63,8 +63,8 @@ public class ReactToRange extends ActionCodelet {
 		
 		try 
 		{
-			if(activation<0.0d)
-				activation=0.0d;
+			if(activation<0.1d)
+				activation=0.1d;
 
 			if(activation>0.5d)
 				activation=0.5d;
