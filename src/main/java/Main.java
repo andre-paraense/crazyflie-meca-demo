@@ -18,7 +18,9 @@ import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
+import main.java.codelets.system1.action.Land;
 import main.java.codelets.system1.action.ReactToRange;
+import main.java.codelets.system1.action.Stop;
 import main.java.codelets.system1.behavior.LandAndStop;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
 import main.java.codelets.system1.motor.MotionCommanderActuator;
@@ -146,9 +148,17 @@ public class Main {
 		
 		List<ActionCodelet> actionCodelets = new ArrayList<>();
 		
-		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds,  motionCommanderActuator.getId(), null);
+		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds, motionCommanderActuator.getId(), null, false);
 		reactToRange.setTimeStep(TIME_STEP);
 		actionCodelets.add(reactToRange);
+		
+		Land land = new Land("Land", perceptualCodeletsIds, motionCommanderActuator.getId(), null, true);
+		land.setTimeStep(TIME_STEP);
+		actionCodelets.add(land);
+		
+		Stop stop = new Stop("Stop", perceptualCodeletsIds, motionCommanderActuator.getId(), null, true);
+		stop.setTimeStep(TIME_STEP);
+		actionCodelets.add(stop);
 		
 		List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
 		

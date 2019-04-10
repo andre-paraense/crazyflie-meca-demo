@@ -29,15 +29,15 @@ public class ReactToRange extends ActionCodelet {
 	private final static int DOWN = 6;
 
 	public ReactToRange(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
-			String soarCodeletId) {
+			String soarCodeletId, boolean isPlanedAction) {
 		
-		super(id, perceptualCodeletsIds, motorCodeletId, soarCodeletId);
+		super(id, perceptualCodeletsIds, motorCodeletId, soarCodeletId, isPlanedAction);
 	}
 
 	@Override
 	public void calculateActivation(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer) {
 		
-		double activation = 0.1d;
+		double activation = 0.0d;
 		directionIndex = -1;
 		
 		if(perceptualMemories != null && perceptualMemories.size() > 0) {
@@ -66,8 +66,8 @@ public class ReactToRange extends ActionCodelet {
 			if(activation<0.0d)
 				activation=0.0d;
 
-			if(activation>0.95d)
-				activation=0.95d;
+			if(activation>0.5d)
+				activation=0.5d;
 
 			this.setActivation(activation);
 
