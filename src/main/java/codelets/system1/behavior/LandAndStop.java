@@ -16,7 +16,7 @@ import br.unicamp.meca.system1.codelets.BehaviorCodelet;
  */
 public class LandAndStop extends BehaviorCodelet {	
 	
-	private static float SAFE_LANDING_DISTANCE = 200.0f;
+	private static float SAFE_LANDING_DISTANCE = 0.9f;
 
 	public LandAndStop(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds,
 			String soarCodeletId, ActionSequencePlan actionSequencePlan) {
@@ -41,7 +41,8 @@ public class LandAndStop extends BehaviorCodelet {
 					
 					float downRange = (float) bodyPerceptions.get(6);
 					
-					if(downRange < SAFE_LANDING_DISTANCE) {
+					if(downRange >= SAFE_LANDING_DISTANCE) {
+						
 						actionSequencePlan.setCurrentActionIdIndex(1);
 					}					
 				}				

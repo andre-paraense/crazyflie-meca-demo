@@ -35,24 +35,27 @@ public class MotionCommanderActuator extends MotorCodelet {
 		
 		if(motorMemory!=null && motorMemory.getI()!=null) {
 			
-			if(motorMemory.getName().equalsIgnoreCase("ReactToRange") && motorMemory.getI() instanceof ArrayList) {
+			if(motorMemory.getI() instanceof ArrayList) {
 				
 				List<Float> velocitiesAxis = (ArrayList<Float>) motorMemory.getI();
 				
-				if(velocitiesAxis != null && velocitiesAxis.size() > 0 ) {	
+				if(velocitiesAxis != null && velocitiesAxis.size() > 0 ) {						
+					
 					try {
 						motionCommander.startLinearMotion(velocitiesAxis.get(0), velocitiesAxis.get(1), velocitiesAxis.get(2));					
 					} catch (Exception e) {
 						e.printStackTrace();
 					}		
 				}
-			} else if (motorMemory.getName().equalsIgnoreCase("Land")) {
+			} else if (motorMemory.getI() instanceof String &&  ((String) motorMemory.getI()).equalsIgnoreCase("Land")) {
+				
 				try {
 					motionCommander.startDown();					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}	
-			} else if (motorMemory.getName().equalsIgnoreCase("Stop")) {
+			} else if (motorMemory.getI() instanceof String &&  ((String) motorMemory.getI()).equalsIgnoreCase("Stop")) {
+				
 				try {
 					motionCommander.land();		
 				} catch (Exception e) {

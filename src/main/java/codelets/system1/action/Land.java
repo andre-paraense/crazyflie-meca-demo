@@ -7,29 +7,21 @@ import java.util.ArrayList;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
-import br.unicamp.meca.system1.codelets.ActionCodelet;
+import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
 
 /**
  * @author andre
  *
  */
-public class Land extends ActionCodelet {
+public class Land extends ActionFromPlanningCodelet {
 
-	public Land(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId, String soarCodeletId,
-			boolean isPlanedAction) {
-		super(id, perceptualCodeletsIds, motorCodeletId, soarCodeletId, isPlanedAction);
+	public Land(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId, String soarCodeletId) {
+		super(id, perceptualCodeletsIds, motorCodeletId, soarCodeletId);
 	}
 
 	@Override
-	public void calculateActivation(ArrayList<Memory> perceptualMemories, Memory broadcastMemory,
-			Memory actionSequencePlanMemoryContainer) {
-	}
-
-	@Override
-	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory,
-			Memory actionSequencePlanMemoryContainer, Memory motorMemory) {
+	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
 		
-		((MemoryContainer) motorMemory).setI(id,getActivation(),id);
+		((MemoryContainer) motorMemory).setI(id,getActivation(),id);	
 	}
-
 }

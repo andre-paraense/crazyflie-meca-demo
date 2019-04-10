@@ -8,14 +8,13 @@ import java.util.List;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;
-import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
-import br.unicamp.meca.system1.codelets.ActionCodelet;
+import br.unicamp.meca.system1.codelets.ActionFromPerception;
 
 /**
  * @author andre
  *
  */
-public class ReactToRange extends ActionCodelet {
+public class ReactToRange extends ActionFromPerception {
 	
 	private int directionIndex = -1;
 	
@@ -28,16 +27,16 @@ public class ReactToRange extends ActionCodelet {
 	private final static int UP = 5;
 	private final static int DOWN = 6;
 
-	public ReactToRange(String id, ArrayList<String> perceptualCodeletsIds, String motorCodeletId,
-			String soarCodeletId, boolean isPlanedAction) {
+	public ReactToRange(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds, String motorCodeletId,
+			String soarCodeletId) {
 		
-		super(id, perceptualCodeletsIds, motorCodeletId, soarCodeletId, isPlanedAction);
+		super(id, perceptualCodeletsIds, motivationalCodeletsIds, motorCodeletId, soarCodeletId);
 	}
 
 	@Override
-	public void calculateActivation(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer) {
+	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory motorMemory) {
 		
-		double activation = 0.1d;
+		double activation = 0.0d;
 		directionIndex = -1;
 		
 		if(perceptualMemories != null && perceptualMemories.size() > 0) {
@@ -60,25 +59,6 @@ public class ReactToRange extends ActionCodelet {
 			}
 			
 		}
-		
-		try 
-		{
-			if(activation<0.1d)
-				activation=0.1d;
-
-			if(activation>0.5d)
-				activation=0.5d;
-
-			this.setActivation(activation);
-
-		} catch (CodeletActivationBoundsException e) 
-		{			
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void proc(ArrayList<Memory> perceptualMemories, Memory broadcastMemory, Memory actionSequencePlanMemoryContainer, Memory motorMemory) {
 		
 		List<Float> velocitiesAxis = new ArrayList<>();
 		
