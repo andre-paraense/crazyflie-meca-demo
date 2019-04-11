@@ -132,7 +132,7 @@ public class Main {
 		EnergyConservationMotivationalCodelet energyConservationMotivationalCodelet;
 		
 		try {
-			energyConservationMotivationalCodelet = new EnergyConservationMotivationalCodelet("EnergyConservationMotivationalCodelet", 0, 0.5, 0.9677, sensoryCodeletsIds, new HashMap<String, Double>());
+			energyConservationMotivationalCodelet = new EnergyConservationMotivationalCodelet("EnergyConservationMotivationalCodelet", 0, 0.5, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
 			energyConservationMotivationalCodelet.setTimeStep(TIME_STEP);
 			energyConservationMotivationalCodeletIds.add(energyConservationMotivationalCodelet.getId());
 			motivationalCodelets.add(energyConservationMotivationalCodelet);
@@ -146,7 +146,7 @@ public class Main {
 		DangerAvoidanceMotivationalCodelet dangerAvoidanceMotivationalCodelet;
 		
 		try {
-			dangerAvoidanceMotivationalCodelet = new DangerAvoidanceMotivationalCodelet("DangerAvoidanceMotivationalCodelet", 0, 0.5, 0.9677, sensoryCodeletsIds, new HashMap<String, Double>());
+			dangerAvoidanceMotivationalCodelet = new DangerAvoidanceMotivationalCodelet("DangerAvoidanceMotivationalCodelet", 0, 0.45, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
 			dangerAvoidanceMotivationalCodelet.setTimeStep(TIME_STEP);
 			dangerAvoidanceMotivationalCodeletIds.add(dangerAvoidanceMotivationalCodelet.getId());
 			motivationalCodelets.add(dangerAvoidanceMotivationalCodelet);
