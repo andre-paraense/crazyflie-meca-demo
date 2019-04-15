@@ -16,6 +16,7 @@ import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 public class SituationPerceptualCodelet extends PerceptualCodelet {
 	
 	public static final float SAFE_RANGE = 200.0f;
+	public static final float VOLTAGE_THRESHOLD = 3.0f;
 
 	public SituationPerceptualCodelet(String id, ArrayList<String> sensoryCodeletsIds) {
 		super(id, sensoryCodeletsIds);
@@ -37,10 +38,15 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 			if(bodyMeasures != null && bodyMeasures.size() > 0) {
 				List<Number> bodyPerceptions = new ArrayList<>();
 				
-				/*
-				 * Battery sense is already a perception given.
-				 */
-				bodyPerceptions.add(bodyMeasures.get(0));
+
+				float batteryVoltage = (float) bodyMeasures.get(0);
+				int batteryState = -1;
+				if(batteryVoltage < VOLTAGE_THRESHOLD) {
+					batteryState = 0;
+				}else {
+					batteryState = 1;
+				}
+				bodyPerceptions.add(batteryState);
 				
 				/*
 				 * Range senses must be interpreted as perceptions of how close we are

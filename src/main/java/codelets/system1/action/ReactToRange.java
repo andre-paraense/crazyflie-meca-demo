@@ -24,8 +24,8 @@ public class ReactToRange extends ActionFromPerception {
 	private final static int BACK = 2;
 	private final static int LEFT = 3;
 	private final static int RIGHT = 4;
-	private final static int UP = 5;
-	private final static int DOWN = 6;
+//	private final static int UP = 5;
+	private final static int DOWN = 5;
 
 	public ReactToRange(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds, String motorCodeletId,
 			String soarCodeletId) {
@@ -83,11 +83,11 @@ public class ReactToRange extends ActionFromPerception {
 			velocitiesAxis.add(-1.0f*ESCAPE_VELOCITY);
 			velocitiesAxis.add(0.0f);
 			break;
-		case UP:
-			velocitiesAxis.add(0.0f);
-			velocitiesAxis.add(0.0f);
-			velocitiesAxis.add(-1.0f*ESCAPE_VELOCITY);
-			break;
+//		case UP:
+//			velocitiesAxis.add(0.0f);
+//			velocitiesAxis.add(0.0f);
+//			velocitiesAxis.add(-1.0f*ESCAPE_VELOCITY);
+//			break;
 		case DOWN:
 			velocitiesAxis.add(0.0f);
 			velocitiesAxis.add(0.0f);

@@ -11,6 +11,7 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.motivational.Drive;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
+import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
 
 /**
  * @author andre
@@ -43,9 +44,15 @@ public class EnergyConservationMotivationalCodelet extends MotivationalCodelet {
 			
 			if(bodyMeasures != null && bodyMeasures.size() > 0) {
 				
-				short batteryState = (short) bodyMeasures.get(0);
+				float batteryVoltage = (float) bodyMeasures.get(0);
+				int batteryState = -1;
+				if(batteryVoltage < SituationPerceptualCodelet.VOLTAGE_THRESHOLD) {
+					batteryState = 1;
+				}else {
+					batteryState = 0;
+				}
 				
-				if(batteryState == 3) {
+				if(batteryState == 1) {
 					activation = 1.0d;
 				}else {
 					activation = 0.0d;

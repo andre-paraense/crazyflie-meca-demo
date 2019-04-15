@@ -39,7 +39,7 @@ public class LandAndStop extends BehaviorCodelet {
 					
 					List<Number> bodyPerceptions = (List<Number>) worldSituation.getI();
 					
-					float downRange = (float) bodyPerceptions.get(6);
+					float downRange = (float) bodyPerceptions.get(5);
 					
 					if(downRange >= SAFE_LANDING_DISTANCE) {
 						
