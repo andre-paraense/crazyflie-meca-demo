@@ -20,11 +20,13 @@ import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import main.java.codelets.system1.action.Land;
+import main.java.codelets.system1.action.MoveSomewhere;
 import main.java.codelets.system1.action.ReactToRange;
 import main.java.codelets.system1.action.Stop;
 import main.java.codelets.system1.behavior.LandAndStop;
 import main.java.codelets.system1.motivational.DangerAvoidanceMotivationalCodelet;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
+import main.java.codelets.system1.motivational.ExploreMotivationalCodelet;
 import main.java.codelets.system1.motor.MotionCommanderActuator;
 import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
 import main.java.codelets.system1.sensory.WholeBodySensor;
@@ -155,6 +157,20 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		ArrayList<String> exploreMotivationalCodeletIds = new ArrayList<>();
+		
+		ExploreMotivationalCodelet exploreMotivationalCodelet;
+		
+		try {
+			exploreMotivationalCodelet = new ExploreMotivationalCodelet("ExploreMotivationalCodelet", 0, 0.45, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
+			exploreMotivationalCodelet.setTimeStep(TIME_STEP);
+			exploreMotivationalCodeletIds.add(exploreMotivationalCodelet.getId());
+			motivationalCodelets.add(exploreMotivationalCodelet);
+			
+		} catch (CodeletActivationBoundsException e) {
+			e.printStackTrace();
+		}
+		
 		/*
 		 * Last step is to create the behavioral codelets,
 		 * all three random, reactive and motivational types.
@@ -168,6 +184,10 @@ public class Main {
 		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds, dangerAvoidanceMotivationalCodeletIds, motionCommanderActuator.getId(), null);
 		reactToRange.setTimeStep(TIME_STEP);
 		actionFromPerceptionCodelets.add(reactToRange);
+		
+		MoveSomewhere moveSomewhere = new MoveSomewhere("MoveSomewhere", perceptualCodeletsIds, exploreMotivationalCodeletIds, motionCommanderActuator.getId(), null);
+		moveSomewhere.setTimeStep(TIME_STEP);
+		actionFromPerceptionCodelets.add(moveSomewhere);
 		
 		List<ActionFromPlanningCodelet> actionFromPlanningCodelets = new ArrayList<>();
 		
