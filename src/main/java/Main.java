@@ -11,15 +11,22 @@ import br.unicamp.cst.core.entities.Codelet;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.util.MindViewer;
 import br.unicamp.meca.mind.MecaMind;
-import br.unicamp.meca.system1.codelets.MotivationalBehavioralCodelet;
+import br.unicamp.meca.models.ActionSequencePlan;
+import br.unicamp.meca.system1.codelets.ActionFromPerception;
+import br.unicamp.meca.system1.codelets.ActionFromPlanningCodelet;
+import br.unicamp.meca.system1.codelets.BehaviorCodelet;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
-import br.unicamp.meca.system1.codelets.ReactiveBehavioralCodelet;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
-import main.java.codelets.system1.behavioral.motivational.ConserveEnergy;
-import main.java.codelets.system1.behavioral.reactive.ReactToRange;
+import main.java.codelets.system1.action.Land;
+import main.java.codelets.system1.action.MoveSomewhere;
+import main.java.codelets.system1.action.ReactToRange;
+import main.java.codelets.system1.action.Stop;
+import main.java.codelets.system1.behavior.LandAndStop;
+import main.java.codelets.system1.motivational.DangerAvoidanceMotivationalCodelet;
 import main.java.codelets.system1.motivational.EnergyConservationMotivationalCodelet;
+import main.java.codelets.system1.motivational.ExploreMotivationalCodelet;
 import main.java.codelets.system1.motor.MotionCommanderActuator;
 import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
 import main.java.codelets.system1.sensory.WholeBodySensor;
@@ -121,15 +128,44 @@ public class Main {
 		 * in order to be glued to them, receiving  their inputs.
 		 */
 		List<MotivationalCodelet> motivationalCodelets = new ArrayList<>();
+		
 		ArrayList<String> energyConservationMotivationalCodeletIds = new ArrayList<>();
 		
 		EnergyConservationMotivationalCodelet energyConservationMotivationalCodelet;
 		
 		try {
-			energyConservationMotivationalCodelet = new EnergyConservationMotivationalCodelet("EnergyConservationMotivationalCodelet", 0, 0.5, 0.9677, sensoryCodeletsIds, new HashMap<String, Double>());
+			energyConservationMotivationalCodelet = new EnergyConservationMotivationalCodelet("EnergyConservationMotivationalCodelet", 0, 0.5, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
 			energyConservationMotivationalCodelet.setTimeStep(TIME_STEP);
 			energyConservationMotivationalCodeletIds.add(energyConservationMotivationalCodelet.getId());
 			motivationalCodelets.add(energyConservationMotivationalCodelet);
+			
+		} catch (CodeletActivationBoundsException e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<String> dangerAvoidanceMotivationalCodeletIds = new ArrayList<>();
+		
+		DangerAvoidanceMotivationalCodelet dangerAvoidanceMotivationalCodelet;
+		
+		try {
+			dangerAvoidanceMotivationalCodelet = new DangerAvoidanceMotivationalCodelet("DangerAvoidanceMotivationalCodelet", 0, 0.45, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
+			dangerAvoidanceMotivationalCodelet.setTimeStep(TIME_STEP);
+			dangerAvoidanceMotivationalCodeletIds.add(dangerAvoidanceMotivationalCodelet.getId());
+			motivationalCodelets.add(dangerAvoidanceMotivationalCodelet);
+			
+		} catch (CodeletActivationBoundsException e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<String> exploreMotivationalCodeletIds = new ArrayList<>();
+		
+		ExploreMotivationalCodelet exploreMotivationalCodelet;
+		
+		try {
+			exploreMotivationalCodelet = new ExploreMotivationalCodelet("ExploreMotivationalCodelet", 0, 0.45, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
+			exploreMotivationalCodelet.setTimeStep(TIME_STEP);
+			exploreMotivationalCodeletIds.add(exploreMotivationalCodelet.getId());
+			motivationalCodelets.add(exploreMotivationalCodelet);
 			
 		} catch (CodeletActivationBoundsException e) {
 			e.printStackTrace();
@@ -143,17 +179,33 @@ public class Main {
 		 * to the reference architecture.		
 		 */
 		
-		List<ReactiveBehavioralCodelet> reactiveBehavioralCodelets = new ArrayList<>();
+		List<ActionFromPerception> actionFromPerceptionCodelets = new ArrayList<>();
 		
-		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds,  motionCommanderActuator.getId(), null);
+		ReactToRange reactToRange = new ReactToRange("ReactToRange", perceptualCodeletsIds, dangerAvoidanceMotivationalCodeletIds, motionCommanderActuator.getId(), null);
 		reactToRange.setTimeStep(TIME_STEP);
-		reactiveBehavioralCodelets.add(reactToRange);
+		actionFromPerceptionCodelets.add(reactToRange);
 		
-		List<MotivationalBehavioralCodelet> motivationalBehavioralCodelets = new ArrayList<>();
+		MoveSomewhere moveSomewhere = new MoveSomewhere("MoveSomewhere", perceptualCodeletsIds, exploreMotivationalCodeletIds, motionCommanderActuator.getId(), null);
+		moveSomewhere.setTimeStep(TIME_STEP);
+		actionFromPerceptionCodelets.add(moveSomewhere);
 		
-		ConserveEnergy conserveEnergy = new ConserveEnergy("ConserveEnergy", motionCommanderActuator.getId(), energyConservationMotivationalCodeletIds, null);
-		conserveEnergy.setTimeStep(TIME_STEP);
-		motivationalBehavioralCodelets.add(conserveEnergy);
+		List<ActionFromPlanningCodelet> actionFromPlanningCodelets = new ArrayList<>();
+		
+		Land land = new Land("Land", perceptualCodeletsIds, motionCommanderActuator.getId(), null);
+		land.setTimeStep(TIME_STEP);
+		actionFromPlanningCodelets.add(land);
+		
+		Stop stop = new Stop("Stop", perceptualCodeletsIds, motionCommanderActuator.getId(), null);
+		stop.setTimeStep(TIME_STEP);
+		actionFromPlanningCodelets.add(stop);
+		
+		List<BehaviorCodelet> behaviorCodelets = new ArrayList<>();
+		
+		ActionSequencePlan landAndStopSequencePlan = new ActionSequencePlan(new String[] {"Land","Stop"});
+		
+		LandAndStop landAndStop = new LandAndStop("LandAndStop", perceptualCodeletsIds, energyConservationMotivationalCodeletIds, null,landAndStopSequencePlan);
+		landAndStop.setTimeStep(TIME_STEP);
+		behaviorCodelets.add(landAndStop);
 
 		/*
 		 * Inserting the System 1 codelets inside MECA mind
@@ -162,8 +214,9 @@ public class Main {
 		mecaMind.setMotorCodelets(motorCodelets);
 		mecaMind.setPerceptualCodelets(perceptualCodelets);
 		mecaMind.setMotivationalCodelets(motivationalCodelets);
-		mecaMind.setReactiveBehavioralCodelets(reactiveBehavioralCodelets);
-		mecaMind.setMotivationalBehavioralCodelets(motivationalBehavioralCodelets);
+		mecaMind.setActionFromPerceptionCodelets(actionFromPerceptionCodelets);
+		mecaMind.setActionFromPlanningCodelets(actionFromPlanningCodelets);
+		mecaMind.setBehaviorCodelets(behaviorCodelets);
 
 		/*
 		 * After passing references to the codelets, we call the method 'MecaMind.mountMecaMind()', which
@@ -187,8 +240,9 @@ public class Main {
 		 * codelets, which activation has a pivotal role.
 		 */
 		List<Codelet> listOfCodelets = new ArrayList<>();
-		listOfCodelets.addAll(mecaMind.getReactiveBehavioralCodelets());
-		listOfCodelets.addAll(mecaMind.getMotivationalBehavioralCodelets());
+		listOfCodelets.addAll(mecaMind.getActionFromPerceptionCodelets());
+		listOfCodelets.addAll(mecaMind.getActionFromPlanningCodelets());
+		listOfCodelets.addAll(mecaMind.getBehaviorCodelets());
 
 		MindViewer mv = new MindViewer(mecaMind, "MECA Mind Inspection - "+mecaMind.getId(), listOfCodelets);
 		mv.setVisible(true);

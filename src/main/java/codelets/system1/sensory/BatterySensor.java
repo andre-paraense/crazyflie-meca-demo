@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import br.unicamp.cst.core.entities.Memory;
-import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
 import se.bitcraze.crazyflie.lib.log.LogConfig;
@@ -24,8 +23,6 @@ public class BatterySensor extends SensoryCodelet {
 	
 	private Crazyflie crazyflie;
 	
-	private Memory batteryStateMO;
-	
 	private LogConfig lc;
 
 	public BatterySensor(String id, Crazyflie crazyflie) {
@@ -39,29 +36,7 @@ public class BatterySensor extends SensoryCodelet {
 	}
 
 	@Override
-	public void accessMemoryObjects() {
-		
-		int index = 0;
-
-		if(batteryStateMO == null)
-			batteryStateMO = this.getOutput(id, index);	
-	}
-
-	@Override
-	public void calculateActivation() {
-		
-		try{
-
-			setActivation(0.0d);
-
-		} catch (CodeletActivationBoundsException e) {
-
-			e.printStackTrace();
-		}	
-	}
-
-	@Override
-	public void proc() {
+	public void proc(Memory sensoryMemory) {
 		
 		if(crazyflie != null && crazyflie.isConnected()) {	       
 
@@ -111,7 +86,7 @@ public class BatterySensor extends SensoryCodelet {
 			                    List<Number> batteryMeasures = new ArrayList<>();
 			                    batteryMeasures.add(data.get("pm.state"));
 			                    batteryMeasures.add(data.get("pm.vbat"));
-			                    batteryStateMO.setI(batteryMeasures);                 
+			                    sensoryMemory.setI(batteryMeasures);                 
 			                    System.out.println("Battery state: "+batteryMeasures.get(0)+", battery value (V): "+batteryMeasures.get(1));
 		                	}		                  
 		                }
@@ -121,10 +96,10 @@ public class BatterySensor extends SensoryCodelet {
 		            logg.start(lc);
 	        	}
 	        } else {
-	        	batteryStateMO.setI(null);
+	        	sensoryMemory.setI(null);
 	        }
 		}else {
-			batteryStateMO.setI(null);
+			sensoryMemory.setI(null);
 		}		
 	}
 }

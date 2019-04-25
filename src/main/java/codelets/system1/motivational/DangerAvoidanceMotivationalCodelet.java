@@ -17,58 +17,58 @@ import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
  * @author andre
  *
  */
-public class EnergyConservationMotivationalCodelet extends MotivationalCodelet {
+public class DangerAvoidanceMotivationalCodelet extends MotivationalCodelet {
 
 
-	public EnergyConservationMotivationalCodelet(String id, double level, double priority, double urgencyThreshold,
+	public DangerAvoidanceMotivationalCodelet(String id, double level, double priority, double urgencyThreshold,
 			ArrayList<String> sensoryCodeletsIds, HashMap<String, Double> motivationalCodeletsIds)
 			throws CodeletActivationBoundsException {
 		super(id, level, priority, urgencyThreshold, sensoryCodeletsIds, motivationalCodeletsIds);
-
 	}
 
 	@Override
-	public double calculateSimpleActivation(List<Memory> sensors) {
+	public double calculateSecundaryDriveActivation(List<Memory> arg0, List<Drive> arg1) {
+		return 0;
+	}
+
+	@Override
+	public double calculateSimpleActivation(List<Memory> sensoryMemories) {
 		
-		double activation = 0.0d;
+		double activation = 0.1d;
 		
-		if (sensors != null && sensors.size() > 0) {
+		if (sensoryMemories != null && sensoryMemories.size() > 0) {
 			
 			List<Number> bodyMeasures = null;
 			
-			for (Memory sensoryMemory : sensors) {
+			for (Memory sensoryMemory : sensoryMemories) {
 				if (sensoryMemory != null && sensoryMemory.getName() != null && sensoryMemory.getName().contains("BodySensor") && sensoryMemory.getI() instanceof ArrayList) {
 					bodyMeasures = (ArrayList<Number>) sensoryMemory.getI();
-	            }
+                }
 			}
 			
 			if(bodyMeasures != null && bodyMeasures.size() > 0) {
 				
-				float batteryVoltage = (float) bodyMeasures.get(0);
-				int batteryState = -1;
-				if(batteryVoltage < SituationPerceptualCodelet.VOLTAGE_THRESHOLD) {
-					batteryState = 1;
-				}else {
-					batteryState = 0;
-				}
-				
-				if(batteryState == 1) {
-					activation = 1.0d;
-				}else {
-					activation = 0.0d;
+				for(int i =1; i < bodyMeasures.size(); i++) {
+					
+					float range = (float) bodyMeasures.get(i);
+					float rangeActivation = SituationPerceptualCodelet.SAFE_RANGE / range;
+					
+					if(rangeActivation > 0.8f && rangeActivation > activation) {
+						
+						activation = rangeActivation;
+					}				
 				}	
-			}else {
-				activation = 0.0d;
-			}			
-		}else {
-			activation = 0.0d;
-		}	
+			}	
+		}
+		
+		if(activation<0.1d)
+			activation=0.1d;
+
+		if(activation>1.0d)
+			activation=1.0d;
+
 		
 		return activation;
 	}
 
-	@Override
-	public double calculateSecundaryDriveActivation(List<Memory> sensors, List<Drive> listOfDrives) {
-		return 0;
-	}
 }

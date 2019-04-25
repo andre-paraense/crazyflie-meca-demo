@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import br.unicamp.cst.core.entities.Memory;
-import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.system1.codelets.SensoryCodelet;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
 import se.bitcraze.crazyflie.lib.log.LogConfig;
@@ -24,8 +23,6 @@ public class WholeBodySensor extends SensoryCodelet {
 
 	private Crazyflie crazyflie;
 
-	private Memory wholeBodyMO;
-
 	private LogConfig lc;
 
 	public WholeBodySensor(String id, Crazyflie crazyflie) {
@@ -35,41 +32,17 @@ public class WholeBodySensor extends SensoryCodelet {
 		int cycleMS = 10;
 
 		lc = new LogConfig("BodySensors", cycleMS);
-		lc.addVariable("pm.state", VariableType.INT16_T);// [BATTERY, CHARGING, CHARGED, LOW_POWER] = list(range(4))
+		lc.addVariable("pm.vbat", VariableType.FLOAT);
 		lc.addVariable("range.front", VariableType.FLOAT);
 		lc.addVariable("range.back", VariableType.FLOAT);
 		lc.addVariable("range.left", VariableType.FLOAT);
 		lc.addVariable("range.right", VariableType.FLOAT);
-		lc.addVariable("range.up", VariableType.FLOAT);
+//		lc.addVariable("range.up", VariableType.FLOAT);
 		lc.addVariable("range.zrange", VariableType.FLOAT);
 	}
 
-	/* (non-Javadoc)
-	 * @see br.unicamp.cst.core.entities.Codelet#accessMemoryObjects()
-	 */
 	@Override
-	public void accessMemoryObjects() {
-		int index = 0;
-
-		if(wholeBodyMO == null)
-			wholeBodyMO = this.getOutput(id, index);	
-
-	}
-
-	@Override
-	public void calculateActivation() {
-		try{
-
-			setActivation(0.0d);
-
-		} catch (CodeletActivationBoundsException e) {
-
-			e.printStackTrace();
-		}	
-	}
-
-	@Override
-	public void proc() {
+	public void proc(Memory sensoryMemory) {
 		if(crazyflie != null && crazyflie.isConnected()) {	       
 
 			Logg logg = crazyflie.getLogg();
@@ -116,14 +89,14 @@ public class WholeBodySensor extends SensoryCodelet {
 							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
 //								System.out.println("timestamp: " + timestamp);
 								List<Number> bodyMeasures = new ArrayList<>();
-								bodyMeasures.add(data.get("pm.state"));
+								bodyMeasures.add(data.get("pm.vbat"));
 								bodyMeasures.add(data.get("range.front"));
 								bodyMeasures.add(data.get("range.back"));
 								bodyMeasures.add(data.get("range.left"));
 								bodyMeasures.add(data.get("range.right"));
-								bodyMeasures.add(data.get("range.up"));
+//								bodyMeasures.add(data.get("range.up"));
 								bodyMeasures.add(data.get("range.zrange"));
-								wholeBodyMO.setI(bodyMeasures);                 
+								sensoryMemory.setI(bodyMeasures);                 
 //								System.out.println("Battery state: "+bodyMeasures.get(0));
 //								System.out.println("Front: "+bodyMeasures.get(1));
 //								System.out.println("Back: "+bodyMeasures.get(2));
@@ -139,10 +112,10 @@ public class WholeBodySensor extends SensoryCodelet {
 					logg.start(lc);
 				}
 			} else {
-				wholeBodyMO.setI(null);
+				sensoryMemory.setI(null);
 			}
 		}else {
-			wholeBodyMO.setI(null);
+			sensoryMemory.setI(null);
 		}		
 	}
 }

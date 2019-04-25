@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.unicamp.cst.core.entities.Memory;
-import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.system1.codelets.MotorCodelet;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
 import se.bitcraze.crazyflie.lib.positioning.MotionCommander;
@@ -19,8 +18,6 @@ import se.bitcraze.crazyflie.lib.positioning.MotionCommander;
 public class MotionCommanderActuator extends MotorCodelet {
 	
 	private MotionCommander motionCommander;
-	
-	private Memory motionCommandMemory;
 
 	public MotionCommanderActuator(String id, Crazyflie crazyflie) {
 		super(id);
@@ -34,42 +31,36 @@ public class MotionCommanderActuator extends MotorCodelet {
 	}
 
 	@Override
-	public void accessMemoryObjects() {
+	public void proc(Memory motorMemory) {
 		
-		int index=0;
-
-		if(motionCommandMemory==null)
-			motionCommandMemory = this.getInput(id, index);
-
-	}
-
-	@Override
-	public void calculateActivation() {
-		
-		try {
-
-			setActivation(0.0d);
-
-		} catch (CodeletActivationBoundsException e){		
-
-			e.printStackTrace();
-		}
-		
-	}
-
-	@Override
-	public void proc() {
-		
-		if(motionCommandMemory!=null && motionCommandMemory.getI()!=null && motionCommandMemory.getI() instanceof ArrayList){
+		if(motorMemory!=null && motorMemory.getI()!=null) {
 			
-			List<Float> velocitiesAxis = (ArrayList<Float>) motionCommandMemory.getI();
-			
-			if(velocitiesAxis != null && velocitiesAxis.size() > 0 ) {	
+			if(motorMemory.getI() instanceof ArrayList) {
+				
+				List<Float> velocitiesAxis = (ArrayList<Float>) motorMemory.getI();
+				
+				if(velocitiesAxis != null && velocitiesAxis.size() > 0 ) {						
+					
+					try {
+						motionCommander.startLinearMotion(velocitiesAxis.get(0), velocitiesAxis.get(1), velocitiesAxis.get(2));					
+					} catch (Exception e) {
+						e.printStackTrace();
+					}		
+				}
+			} else if (motorMemory.getI() instanceof String &&  ((String) motorMemory.getI()).equalsIgnoreCase("Land")) {
+				
 				try {
-					motionCommander.startLinearMotion(velocitiesAxis.get(0), velocitiesAxis.get(1), velocitiesAxis.get(2));					
+					motionCommander.startDown();					
 				} catch (Exception e) {
 					e.printStackTrace();
-				}		
+				}	
+			} else if (motorMemory.getI() instanceof String &&  ((String) motorMemory.getI()).equalsIgnoreCase("Stop")) {
+				
+				try {
+					motionCommander.land();		
+				} catch (Exception e) {
+					e.printStackTrace();
+				}	
 			}
 		}
 	}

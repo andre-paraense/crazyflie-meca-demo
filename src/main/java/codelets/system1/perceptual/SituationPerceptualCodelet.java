@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.unicamp.cst.core.entities.Memory;
-import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 
 /**
@@ -17,47 +16,14 @@ import br.unicamp.meca.system1.codelets.PerceptualCodelet;
 public class SituationPerceptualCodelet extends PerceptualCodelet {
 	
 	public static final float SAFE_RANGE = 200.0f;
-	
-    private ArrayList<Memory> sensoryMemories = new ArrayList<Memory>();
-
-    private Memory worldSituation;
+	public static final float VOLTAGE_THRESHOLD = 3.0f;
 
 	public SituationPerceptualCodelet(String id, ArrayList<String> sensoryCodeletsIds) {
 		super(id, sensoryCodeletsIds);
 	}
 
 	@Override
-	public void accessMemoryObjects() {
-		
-        int index = 0;
-
-        if (worldSituation == null)
-        	worldSituation = this.getOutput(id, index);
-
-        if (sensoryMemories == null || sensoryMemories.size() == 0) {
-            if (sensoryCodeletsIds != null) {
-
-                for (String sensoryCodeletsId : sensoryCodeletsIds) {
-                    sensoryMemories.add(this.getInput(sensoryCodeletsId, index));
-                }
-            }
-        }
-	}
-
-	@Override
-	public void calculateActivation() {
-		try{
-
-			setActivation(0.0d);
-
-		} catch (CodeletActivationBoundsException e) {
-
-			e.printStackTrace();
-		}	
-	}
-
-	@Override
-	public void proc() {
+	public void proc(ArrayList<Memory> sensoryMemories, Memory perceptualMemory) {
 		
 		if (sensoryMemories != null && sensoryMemories.size() > 0) {
 			
@@ -72,10 +38,15 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 			if(bodyMeasures != null && bodyMeasures.size() > 0) {
 				List<Number> bodyPerceptions = new ArrayList<>();
 				
-				/*
-				 * Battery sense is already a perception given.
-				 */
-				bodyPerceptions.add(bodyMeasures.get(0));
+
+				float batteryVoltage = (float) bodyMeasures.get(0);
+				int batteryState = -1;
+				if(batteryVoltage < VOLTAGE_THRESHOLD) {
+					batteryState = 0;
+				}else {
+					batteryState = 1;
+				}
+				bodyPerceptions.add(batteryState);
 				
 				/*
 				 * Range senses must be interpreted as perceptions of how close we are
@@ -94,7 +65,7 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 					
 				}
 				
-				worldSituation.setI(bodyPerceptions);
+				perceptualMemory.setI(bodyPerceptions);
 				
 //				System.out.println("Battery state: "+bodyPerceptions.get(0));
 //				System.out.println("Front: "+bodyPerceptions.get(1));
@@ -105,10 +76,10 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 //				System.out.println("Down: "+bodyPerceptions.get(6));
 				
 			} else {
-				worldSituation.setI(null);
+				perceptualMemory.setI(null);
 			}
 		} else {
-			worldSituation.setI(null);
+			perceptualMemory.setI(null);
 		}
 	}
 }
