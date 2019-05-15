@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.java.codelets.system1.motivational;
+package codelets.system1.motivational;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.exceptions.CodeletActivationBoundsException;
 import br.unicamp.cst.motivational.Drive;
 import br.unicamp.meca.system1.codelets.MotivationalCodelet;
-import main.java.codelets.system1.perceptual.SituationPerceptualCodelet;
+import codelets.system1.perceptual.SituationPerceptualCodelet;
 
 /**
  * @author andre

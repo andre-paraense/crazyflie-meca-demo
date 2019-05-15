@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.java.codelets.system1.sensory;
+package codelets.system1.sensory;
 
 import java.util.ArrayList;
 import java.util.List;
