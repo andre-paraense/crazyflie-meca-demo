@@ -32,12 +32,12 @@ public class WholeBodySensor extends SensoryCodelet {
 		int cycleMS = 10;
 
 		lc = new LogConfig("BodySensors", cycleMS);
-		lc.addVariable("pm.vbat", VariableType.FLOAT);
+//		lc.addVariable("pm.vbat", VariableType.FLOAT);
 		lc.addVariable("range.front", VariableType.FLOAT);
 		lc.addVariable("range.back", VariableType.FLOAT);
 		lc.addVariable("range.left", VariableType.FLOAT);
 		lc.addVariable("range.right", VariableType.FLOAT);
-//		lc.addVariable("range.up", VariableType.FLOAT);
+		lc.addVariable("range.up", VariableType.FLOAT);
 		lc.addVariable("range.zrange", VariableType.FLOAT);
 	}
 
@@ -89,12 +89,12 @@ public class WholeBodySensor extends SensoryCodelet {
 							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
 //								System.out.println("timestamp: " + timestamp);
 								List<Number> bodyMeasures = new ArrayList<>();
-								bodyMeasures.add(data.get("pm.vbat"));
+//								bodyMeasures.add(data.get("pm.vbat"));
 								bodyMeasures.add(data.get("range.front"));
 								bodyMeasures.add(data.get("range.back"));
 								bodyMeasures.add(data.get("range.left"));
 								bodyMeasures.add(data.get("range.right"));
-//								bodyMeasures.add(data.get("range.up"));
+								bodyMeasures.add(data.get("range.up"));
 								bodyMeasures.add(data.get("range.zrange"));
 								sensoryMemory.setI(bodyMeasures);                 
 //								System.out.println("Battery state: "+bodyMeasures.get(0));

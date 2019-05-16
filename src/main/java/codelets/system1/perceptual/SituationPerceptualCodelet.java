@@ -15,7 +15,9 @@ import br.unicamp.meca.system1.codelets.PerceptualCodelet;
  */
 public class SituationPerceptualCodelet extends PerceptualCodelet {
 	
-	public static final float SAFE_RANGE = 200.0f;
+	public static final float SAFE_RANGE_SIDES = 100.0f;
+	public static final float SAFE_RANGE_UP = 70.0f;
+	public static final float SAFE_RANGE_DOWN =30.0f;
 	public static final float VOLTAGE_THRESHOLD = 3.0f;
 
 	public SituationPerceptualCodelet(String id, ArrayList<String> sensoryCodeletsIds) {
@@ -39,22 +41,30 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 				List<Number> bodyPerceptions = new ArrayList<>();
 				
 
-				float batteryVoltage = (float) bodyMeasures.get(0);
-				int batteryState = -1;
-				if(batteryVoltage < VOLTAGE_THRESHOLD) {
-					batteryState = 0;
-				}else {
-					batteryState = 1;
-				}
-				bodyPerceptions.add(batteryState);
+//				float batteryVoltage = (float) bodyMeasures.get(0);
+//				int batteryState = -1;
+//				if(batteryVoltage < VOLTAGE_THRESHOLD) {
+//					batteryState = 0;
+//				}else {
+//					batteryState = 1;
+//				}
+//				bodyPerceptions.add(batteryState);
 				
 				/*
 				 * Range senses must be interpreted as perceptions of how close we are
 				 */
-				for(int i =1; i < bodyMeasures.size(); i++) {
+				for(int i =0; i < bodyMeasures.size(); i++) {
 					
 					float range = (float) bodyMeasures.get(i);
-					float activation = SAFE_RANGE / range;
+					float activation = 0.0f;
+					if(i < 4) {
+						activation = SAFE_RANGE_SIDES / range;
+					} else if (i == 4) {
+						activation = SAFE_RANGE_UP / range;
+					} else {
+						activation = SAFE_RANGE_DOWN / range;
+					}
+					
 					if (activation < 0.0f)
 		                activation = 0.0f;
 

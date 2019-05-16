@@ -18,13 +18,13 @@ public class ReactToRange extends ActionFromPerception {
 	
 	private int directionIndex = -1;
 	
-	private final static float ESCAPE_VELOCITY = 0.5f;
+	private final static float ESCAPE_VELOCITY = 0.1f;
 	
-	private final static int FRONT = 1;	
-	private final static int BACK = 2;
-	private final static int LEFT = 3;
-	private final static int RIGHT = 4;
-//	private final static int UP = 5;
+	private final static int FRONT = 0;	
+	private final static int BACK = 1;
+	private final static int LEFT = 2;
+	private final static int RIGHT = 3;
+	private final static int UP = 4;
 	private final static int DOWN = 5;
 
 	public ReactToRange(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds, String motorCodeletId,
@@ -47,11 +47,11 @@ public class ReactToRange extends ActionFromPerception {
 				
 				List<Number> bodyPerceptions = (List<Number>) worldSituation.getI();
 				
-				for(int i =1; i < bodyPerceptions.size(); i++) {
+				for(int i =0; i < bodyPerceptions.size(); i++) {
 					
 					float rangeActivation = (float) bodyPerceptions.get(i);
 					
-					if(rangeActivation > 0.8f && rangeActivation > activation) {
+					if(rangeActivation > 0.99f && rangeActivation > activation) {
 						activation = rangeActivation;
 						directionIndex = i;
 					}				
@@ -83,11 +83,11 @@ public class ReactToRange extends ActionFromPerception {
 			velocitiesAxis.add(-1.0f*ESCAPE_VELOCITY);
 			velocitiesAxis.add(0.0f);
 			break;
-//		case UP:
-//			velocitiesAxis.add(0.0f);
-//			velocitiesAxis.add(0.0f);
-//			velocitiesAxis.add(-1.0f*ESCAPE_VELOCITY);
-//			break;
+		case UP:
+			velocitiesAxis.add(0.0f);
+			velocitiesAxis.add(0.0f);
+			velocitiesAxis.add(-1.0f*ESCAPE_VELOCITY);
+			break;
 		case DOWN:
 			velocitiesAxis.add(0.0f);
 			velocitiesAxis.add(0.0f);

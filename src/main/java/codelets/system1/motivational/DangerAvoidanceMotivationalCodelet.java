@@ -48,12 +48,19 @@ public class DangerAvoidanceMotivationalCodelet extends MotivationalCodelet {
 			
 			if(bodyMeasures != null && bodyMeasures.size() > 0) {
 				
-				for(int i =1; i < bodyMeasures.size(); i++) {
+				for(int i =0; i < bodyMeasures.size(); i++) {
 					
 					float range = (float) bodyMeasures.get(i);
-					float rangeActivation = SituationPerceptualCodelet.SAFE_RANGE / range;
+					float rangeActivation = 0.0f;
+					if(i < 4) {
+						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_SIDES / range;
+					} else if (i == 4) {
+						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_UP / range;
+					} else {
+						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_DOWN / range;
+					}
 					
-					if(rangeActivation > 0.8f && rangeActivation > activation) {
+					if(rangeActivation > 0.99f && rangeActivation > activation) {
 						
 						activation = rangeActivation;
 					}				
