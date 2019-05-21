@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-   implementation 'com.github.CST-Group:meca:0.1.0'
+   implementation 'com.github.CST-Group:meca:0.1.1'
    implementation 'com.github.andre-paraense:crazyflie-lib-java:0.0.2'
    testImplementation group: 'junit', name: 'junit', version: '4.9'
 }
