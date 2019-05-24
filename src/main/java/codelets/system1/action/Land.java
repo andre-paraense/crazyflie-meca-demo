@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.java.codelets.system1.action;
+package codelets.system1.action;
 
 import java.util.ArrayList;
 
