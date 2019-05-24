@@ -1,0 +1,32 @@
+plugins {
+	id 'java-library-distribution'
+  	id 'jacoco'
+  	id 'application'
+}
+
+application {
+    mainClassName = 'Main'
+}
+
+description = "Crazyflie MECA Demo"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+   implementation 'com.github.CST-Group:meca:0.1.1'
+   implementation 'com.github.andre-paraense:crazyflie-lib-java:0.0.2'
+   testImplementation group: 'junit', name: 'junit', version: '4.9'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}

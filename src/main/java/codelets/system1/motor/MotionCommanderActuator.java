@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.java.codelets.system1.motor;
+package codelets.system1.motor;
 
 import java.util.ArrayList;
 import java.util.List;
