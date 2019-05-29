@@ -28,7 +28,7 @@ public class MultirangerSensor extends SensoryCodelet {
 		super(id);
 		this.crazyflie = crazyflie;
 
-		int periodInMs = 100;
+		int periodInMs = 10;
 		lc = new LogConfig("multiranger", periodInMs);
 		lc.addVariable("range.front", VariableType.FLOAT);
 		lc.addVariable("range.back", VariableType.FLOAT);
@@ -54,38 +54,38 @@ public class MultirangerSensor extends SensoryCodelet {
 					logg.addLogListener(new LogListener() {
 
 						public void logConfigAdded(LogConfig logConfig) {
-							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-								String msg = "";
-								if(logConfig.isAdded()) {
-									msg = "' added";
-								} else {
-									msg = "' deleted";
-								}
-								System.out.println("LogConfig '" + logConfig.getName() + msg);
-							}
+//							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//								String msg = "";
+//								if(logConfig.isAdded()) {
+//									msg = "' added";
+//								} else {
+//									msg = "' deleted";
+//								}
+//								System.out.println("LogConfig '" + logConfig.getName() + msg);
+//							}
 						}
 
 						public void logConfigError(LogConfig logConfig) {
-							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-								System.err.println("Error when logging '" + logConfig.getName() + "': " + logConfig.getErrNo());
-							}							
+//							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//								System.err.println("Error when logging '" + logConfig.getName() + "': " + logConfig.getErrNo());
+//							}							
 						}
 
 						public void logConfigStarted(LogConfig logConfig) {
-							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-								String msg = "";
-								if(logConfig.isStarted()) {
-									msg = "' started";
-								} else {
-									msg = "' stopped";
-								}
-								System.out.println("LogConfig '" + logConfig.getName() + msg);
-							}
+//							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//								String msg = "";
+//								if(logConfig.isStarted()) {
+//									msg = "' started";
+//								} else {
+//									msg = "' stopped";
+//								}
+//								System.out.println("LogConfig '" + logConfig.getName() + msg);
+//							}
 						}
 
 						public void logDataReceived(LogConfig logConfig, Map<String, Number> data, int timestamp) {
 							if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-								System.out.println("timestamp: " + timestamp);
+//								System.out.println("timestamp: " + timestamp);
 								List<Number> multirangerMeasures = new ArrayList<>();
 								multirangerMeasures.add(data.get("range.front"));
 								multirangerMeasures.add(data.get("range.back"));
@@ -94,12 +94,12 @@ public class MultirangerSensor extends SensoryCodelet {
 								multirangerMeasures.add(data.get("range.up"));
 								multirangerMeasures.add(data.get("range.zrange"));
 								sensoryMemory.setI(multirangerMeasures);                 
-								System.out.println("Front: "+multirangerMeasures.get(0));
-								System.out.println("Back: "+multirangerMeasures.get(1));
-								System.out.println("Left: "+multirangerMeasures.get(2));
-								System.out.println("Right: "+multirangerMeasures.get(3));
-								System.out.println("Up: "+multirangerMeasures.get(4));
-								System.out.println("Down: "+multirangerMeasures.get(5));
+//								System.out.println("Front: "+multirangerMeasures.get(0));
+//								System.out.println("Back: "+multirangerMeasures.get(1));
+//								System.out.println("Left: "+multirangerMeasures.get(2));
+//								System.out.println("Right: "+multirangerMeasures.get(3));
+//								System.out.println("Up: "+multirangerMeasures.get(4));
+//								System.out.println("Down: "+multirangerMeasures.get(5));
 							}							
 						}
 					});

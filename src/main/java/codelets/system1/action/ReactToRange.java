@@ -20,12 +20,12 @@ public class ReactToRange extends ActionFromPerception {
 	
 	private final static float ESCAPE_VELOCITY = 0.1f;
 	
-	private final static int FRONT = 0;	
-	private final static int BACK = 1;
-	private final static int LEFT = 2;
-	private final static int RIGHT = 3;
-	private final static int UP = 4;
-	private final static int DOWN = 5;
+	private final static int FRONT = 1;	
+	private final static int BACK = 2;
+	private final static int LEFT = 3;
+	private final static int RIGHT = 4;
+	private final static int UP = 5;
+	private final static int DOWN = 6;
 
 	public ReactToRange(String id, ArrayList<String> perceptualCodeletsIds, ArrayList<String> motivationalCodeletsIds, String motorCodeletId,
 			String soarCodeletId) {
@@ -47,7 +47,7 @@ public class ReactToRange extends ActionFromPerception {
 				
 				List<Number> bodyPerceptions = (List<Number>) worldSituation.getI();
 				
-				for(int i =0; i < bodyPerceptions.size(); i++) {
+				for(int i = 1; i < bodyPerceptions.size(); i++) {
 					
 					float rangeActivation = (float) bodyPerceptions.get(i);
 					

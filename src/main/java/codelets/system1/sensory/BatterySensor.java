@@ -29,7 +29,7 @@ public class BatterySensor extends SensoryCodelet {
 		super(id);
 		this.crazyflie = crazyflie;
 		
-		int periodInMs = 100;
+		int periodInMs = 10;
 		lc = new LogConfig("battery", periodInMs);
 		lc.addVariable("pm.state", VariableType.INT16_T);// [BATTERY, CHARGING, CHARGED, LOW_POWER] = list(range(4))
         lc.addVariable("pm.vbat", VariableType.FLOAT);//value in volts       
@@ -51,43 +51,43 @@ public class BatterySensor extends SensoryCodelet {
 		            logg.addLogListener(new LogListener() {
 
 		                public void logConfigAdded(LogConfig logConfig) {
-		                	if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-			                    String msg = "";
-			                    if(logConfig.isAdded()) {
-			                        msg = "' added";
-			                    } else {
-			                        msg = "' deleted";
-			                    }
-			                    System.out.println("LogConfig '" + logConfig.getName() + msg);
-							}
+//		                	if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//			                    String msg = "";
+//			                    if(logConfig.isAdded()) {
+//			                        msg = "' added";
+//			                    } else {
+//			                        msg = "' deleted";
+//			                    }
+//			                    System.out.println("LogConfig '" + logConfig.getName() + msg);
+//							}
 		                }
 
 		                public void logConfigError(LogConfig logConfig) {
-		                	if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-		                		System.err.println("Error when logging '" + logConfig.getName() + "': " + logConfig.getErrNo());
-							}		                    
+//		                	if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//		                		System.err.println("Error when logging '" + logConfig.getName() + "': " + logConfig.getErrNo());
+//							}		                    
 		                }
 
 		                public void logConfigStarted(LogConfig logConfig) {
-		                	if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-			                    String msg = "";
-			                    if(logConfig.isStarted()) {
-			                        msg = "' started";
-			                    } else {
-			                        msg = "' stopped";
-			                    }
-			                    System.out.println("LogConfig '" + logConfig.getName() + msg);
-							}
+//		                	if(logConfig.getName().equalsIgnoreCase(lc.getName())){
+//			                    String msg = "";
+//			                    if(logConfig.isStarted()) {
+//			                        msg = "' started";
+//			                    } else {
+//			                        msg = "' stopped";
+//			                    }
+//			                    System.out.println("LogConfig '" + logConfig.getName() + msg);
+//							}
 		                }
 
 		                public void logDataReceived(LogConfig logConfig, Map<String, Number> data, int timestamp) {
 		                	if(logConfig.getName().equalsIgnoreCase(lc.getName())){
-		                		System.out.println("timestamp: " + timestamp);
+//		                		System.out.println("timestamp: " + timestamp);
 			                    List<Number> batteryMeasures = new ArrayList<>();
 			                    batteryMeasures.add(data.get("pm.state"));
 			                    batteryMeasures.add(data.get("pm.vbat"));
 			                    sensoryMemory.setI(batteryMeasures);                 
-			                    System.out.println("Battery state: "+batteryMeasures.get(0)+", battery value (V): "+batteryMeasures.get(1));
+//			                    System.out.println("Battery state: "+batteryMeasures.get(0)+", battery value (V): "+batteryMeasures.get(1));
 		                	}		                  
 		                }
 		            });

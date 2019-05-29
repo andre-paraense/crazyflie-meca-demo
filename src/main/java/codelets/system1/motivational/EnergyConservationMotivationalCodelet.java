@@ -34,17 +34,17 @@ public class EnergyConservationMotivationalCodelet extends MotivationalCodelet {
 		
 		if (sensors != null && sensors.size() > 0) {
 			
-			List<Number> bodyMeasures = null;
+			List<Number> batteryMeasures = null;
 			
 			for (Memory sensoryMemory : sensors) {
-				if (sensoryMemory != null && sensoryMemory.getName() != null && sensoryMemory.getName().contains("BodySensor") && sensoryMemory.getI() instanceof ArrayList) {
-					bodyMeasures = (ArrayList<Number>) sensoryMemory.getI();
+				if (sensoryMemory != null && sensoryMemory.getName() != null && sensoryMemory.getName().contains("BatterySensor") && sensoryMemory.getI() instanceof ArrayList) {
+					batteryMeasures = (ArrayList<Number>) sensoryMemory.getI();
 	            }
 			}
 			
-			if(bodyMeasures != null && bodyMeasures.size() > 0) {
+			if(batteryMeasures != null && batteryMeasures.size() > 0) {
 				
-				float batteryVoltage = (float) bodyMeasures.get(0);
+				float batteryVoltage = (float) batteryMeasures.get(1);
 				int batteryState = -1;
 				if(batteryVoltage < SituationPerceptualCodelet.VOLTAGE_THRESHOLD) {
 					batteryState = 1;
