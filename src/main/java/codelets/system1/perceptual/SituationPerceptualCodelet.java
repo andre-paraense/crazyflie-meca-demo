@@ -17,7 +17,7 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 	
 	public static final float SAFE_RANGE_SIDES = 30.0f;
 	public static final float SAFE_RANGE_UP_FRONT_BACK = 90.0f;
-	public static final float SAFE_RANGE_DOWN =30.0f;
+	public static final float SAFE_RANGE_DOWN = 40.0f;
 	public static final float VOLTAGE_THRESHOLD = 3.0f;
 
 	public SituationPerceptualCodelet(String id, ArrayList<String> sensoryCodeletsIds) {
