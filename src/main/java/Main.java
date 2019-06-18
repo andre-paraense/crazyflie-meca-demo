@@ -166,7 +166,7 @@ public class Main {
 		ExploreMotivationalCodelet exploreMotivationalCodelet;
 		
 		try {
-			exploreMotivationalCodelet = new ExploreMotivationalCodelet("ExploreMotivationalCodelet", 0, 0.45, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
+			exploreMotivationalCodelet = new ExploreMotivationalCodelet("ExploreMotivationalCodelet", 0, 0.4, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
 			exploreMotivationalCodelet.setTimeStep(TIME_STEP);
 			exploreMotivationalCodeletIds.add(exploreMotivationalCodelet.getId());
 			motivationalCodelets.add(exploreMotivationalCodelet);
