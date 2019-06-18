@@ -5,7 +5,6 @@ package codelets.system1.action;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import br.unicamp.cst.core.entities.Memory;
 import br.unicamp.cst.core.entities.MemoryContainer;

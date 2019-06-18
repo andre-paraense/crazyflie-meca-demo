@@ -46,9 +46,9 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 				
 				int batteryState = -1;
 				if(batteryVoltage < VOLTAGE_THRESHOLD) {
-					batteryState = 0;
-				}else {
 					batteryState = 1;
+				}else {
+					batteryState = 0;
 				}
 				bodyPerceptions.add(batteryState);
 				
