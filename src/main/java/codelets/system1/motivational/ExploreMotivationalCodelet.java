@@ -52,10 +52,10 @@ public class ExploreMotivationalCodelet extends MotivationalCodelet {
 					
 					float range = (float) multirangerMeasures.get(i);					
 					float rangeActivation = 0.0f;
-					if(i < 4) {
+					if(i == 2 || i== 3) {
 						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_SIDES / range;
-					} else if (i == 4) {
-						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_UP / range;
+					} else if (i < 4) {
+						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_UP_FRONT_BACK / range;
 					} else {
 						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_DOWN / range;
 					}

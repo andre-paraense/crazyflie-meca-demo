@@ -15,8 +15,8 @@ import br.unicamp.meca.system1.codelets.PerceptualCodelet;
  */
 public class SituationPerceptualCodelet extends PerceptualCodelet {
 	
-	public static final float SAFE_RANGE_SIDES = 10.0f;
-	public static final float SAFE_RANGE_UP = 70.0f;
+	public static final float SAFE_RANGE_SIDES = 30.0f;
+	public static final float SAFE_RANGE_UP_FRONT_BACK = 90.0f;
 	public static final float SAFE_RANGE_DOWN =30.0f;
 	public static final float VOLTAGE_THRESHOLD = 3.0f;
 
@@ -59,10 +59,10 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 					
 					float range = (float) multiRangerMeasures.get(i);
 					float activation = 0.0f;
-					if(i < 4) {
+					if(i == 2 || i== 3) {
 						activation = SAFE_RANGE_SIDES / range;
-					} else if (i == 4) {
-						activation = SAFE_RANGE_UP / range;
+					} else if (i < 4) {
+						activation = SAFE_RANGE_UP_FRONT_BACK / range;
 					} else {
 						activation = SAFE_RANGE_DOWN / range;
 					}
