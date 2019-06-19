@@ -22,9 +22,9 @@ public class MotionCommanderActuator extends MotorCodelet {
 	public MotionCommanderActuator(String id, Crazyflie crazyflie) {
 		super(id);
 		
-		motionCommander = new MotionCommander(crazyflie);
+		motionCommander = new MotionCommander(crazyflie,0.1f);
 		try {
-			motionCommander.takeOff();
+			motionCommander.takeOff(0.1f,0.1f);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -15,7 +15,9 @@ import br.unicamp.meca.system1.codelets.PerceptualCodelet;
  */
 public class SituationPerceptualCodelet extends PerceptualCodelet {
 	
-	public static final float SAFE_RANGE = 200.0f;
+	public static final float SAFE_RANGE_SIDES = 30.0f;
+	public static final float SAFE_RANGE_UP_FRONT_BACK = 90.0f;
+	public static final float SAFE_RANGE_DOWN = 30.0f;
 	public static final float VOLTAGE_THRESHOLD = 3.0f;
 
 	public SituationPerceptualCodelet(String id, ArrayList<String> sensoryCodeletsIds) {
@@ -27,34 +29,44 @@ public class SituationPerceptualCodelet extends PerceptualCodelet {
 		
 		if (sensoryMemories != null && sensoryMemories.size() > 0) {
 			
-			List<Number> bodyMeasures = null;
+			List<Number> multiRangerMeasures = null;
+			float batteryVoltage = -1.0f;
 			
 			for (Memory sensoryMemory : sensoryMemories) {
-				if (sensoryMemory != null && sensoryMemory.getName() != null && sensoryMemory.getName().contains("BodySensor") && sensoryMemory.getI() instanceof ArrayList) {
-					bodyMeasures = (ArrayList<Number>) sensoryMemory.getI();
+				if (sensoryMemory != null && sensoryMemory.getName() != null && sensoryMemory.getName().contains("MultirangerSensor") && sensoryMemory.getI() instanceof ArrayList) {
+					multiRangerMeasures = (ArrayList<Number>) sensoryMemory.getI();
+                } else if (sensoryMemory != null && sensoryMemory.getName() != null && sensoryMemory.getName().contains("BatterySensor") && sensoryMemory.getI() instanceof ArrayList) {
+					List<Number> batteryMeasures = (ArrayList<Number>) sensoryMemory.getI();
+					batteryVoltage = (float) batteryMeasures.get(1);
                 }
 			}
 			
-			if(bodyMeasures != null && bodyMeasures.size() > 0) {
+			if(multiRangerMeasures != null && multiRangerMeasures.size() > 0 && batteryVoltage != -1.0f) {
 				List<Number> bodyPerceptions = new ArrayList<>();
 				
-
-				float batteryVoltage = (float) bodyMeasures.get(0);
 				int batteryState = -1;
 				if(batteryVoltage < VOLTAGE_THRESHOLD) {
-					batteryState = 0;
-				}else {
 					batteryState = 1;
+				}else {
+					batteryState = 0;
 				}
 				bodyPerceptions.add(batteryState);
 				
 				/*
 				 * Range senses must be interpreted as perceptions of how close we are
 				 */
-				for(int i =1; i < bodyMeasures.size(); i++) {
+				for(int i = 0; i < multiRangerMeasures.size(); i++) {
 					
-					float range = (float) bodyMeasures.get(i);
-					float activation = SAFE_RANGE / range;
+					float range = (float) multiRangerMeasures.get(i);
+					float activation = 0.0f;
+					if(i == 2 || i== 3) {
+						activation = SAFE_RANGE_SIDES / range;
+					} else if (i < 4) {
+						activation = SAFE_RANGE_UP_FRONT_BACK / range;
+					} else {
+						activation = SAFE_RANGE_DOWN / range;
+					}
+					
 					if (activation < 0.0f)
 		                activation = 0.0f;
 

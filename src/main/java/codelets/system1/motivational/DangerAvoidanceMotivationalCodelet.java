@@ -38,22 +38,29 @@ public class DangerAvoidanceMotivationalCodelet extends MotivationalCodelet {
 		
 		if (sensoryMemories != null && sensoryMemories.size() > 0) {
 			
-			List<Number> bodyMeasures = null;
+			List<Number> multirangerMeasures = null;
 			
 			for (Memory sensoryMemory : sensoryMemories) {
-				if (sensoryMemory != null && sensoryMemory.getName() != null && sensoryMemory.getName().contains("BodySensor") && sensoryMemory.getI() instanceof ArrayList) {
-					bodyMeasures = (ArrayList<Number>) sensoryMemory.getI();
+				if (sensoryMemory != null && sensoryMemory.getName() != null && sensoryMemory.getName().contains("MultirangerSensor") && sensoryMemory.getI() instanceof ArrayList) {
+					multirangerMeasures = (ArrayList<Number>) sensoryMemory.getI();
                 }
 			}
 			
-			if(bodyMeasures != null && bodyMeasures.size() > 0) {
+			if(multirangerMeasures != null && multirangerMeasures.size() > 0) {
 				
-				for(int i =1; i < bodyMeasures.size(); i++) {
+				for(int i =0; i < multirangerMeasures.size(); i++) {
 					
-					float range = (float) bodyMeasures.get(i);
-					float rangeActivation = SituationPerceptualCodelet.SAFE_RANGE / range;
+					float range = (float) multirangerMeasures.get(i);
+					float rangeActivation = 0.0f;
+					if(i == 2 || i== 3) {
+						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_SIDES / range;
+					} else if (i < 4) {
+						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_UP_FRONT_BACK / range;
+					} else {
+						rangeActivation = SituationPerceptualCodelet.SAFE_RANGE_DOWN / range;
+					}
 					
-					if(rangeActivation > 0.8f && rangeActivation > activation) {
+					if(rangeActivation > 0.99f && rangeActivation > activation) {
 						
 						activation = rangeActivation;
 					}				

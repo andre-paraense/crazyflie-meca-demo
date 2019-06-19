@@ -27,7 +27,8 @@ import codelets.system1.motivational.EnergyConservationMotivationalCodelet;
 import codelets.system1.motivational.ExploreMotivationalCodelet;
 import codelets.system1.motor.MotionCommanderActuator;
 import codelets.system1.perceptual.SituationPerceptualCodelet;
-import codelets.system1.sensory.WholeBodySensor;
+import codelets.system1.sensory.BatterySensor;
+import codelets.system1.sensory.MultirangerSensor;
 import se.bitcraze.crazyflie.lib.crazyflie.ConnectionAdapter;
 import se.bitcraze.crazyflie.lib.crazyflie.Crazyflie;
 import se.bitcraze.crazyflie.lib.crazyradio.ConnectionData;
@@ -90,11 +91,16 @@ public class Main {
 		 * codelets according to the reference architecture
 		 * */
 		ArrayList<String> sensoryCodeletsIds = new ArrayList<>();
-
-		WholeBodySensor bodySensor = new WholeBodySensor("BodySensor", crazyflie);
-		bodySensor.setTimeStep(TIME_STEP);
-		sensoryCodelets.add(bodySensor);
-		sensoryCodeletsIds.add(bodySensor.getId());
+		
+		BatterySensor batterySensor = new BatterySensor("BatterySensor", crazyflie);
+		batterySensor.setTimeStep(TIME_STEP);
+		sensoryCodelets.add(batterySensor);
+		sensoryCodeletsIds.add(batterySensor.getId());
+		
+		MultirangerSensor multirangerSensor = new MultirangerSensor("MultirangerSensor", crazyflie);
+		multirangerSensor.setTimeStep(TIME_STEP);
+		sensoryCodelets.add(multirangerSensor);
+		sensoryCodeletsIds.add(multirangerSensor.getId());
 		
 		/*
 		 * Now it is a good time to create the motor codelets, before the Behavioral ones,
@@ -160,7 +166,7 @@ public class Main {
 		ExploreMotivationalCodelet exploreMotivationalCodelet;
 		
 		try {
-			exploreMotivationalCodelet = new ExploreMotivationalCodelet("ExploreMotivationalCodelet", 0, 0.45, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
+			exploreMotivationalCodelet = new ExploreMotivationalCodelet("ExploreMotivationalCodelet", 0, 0.4, 0.9, sensoryCodeletsIds, new HashMap<String, Double>());
 			exploreMotivationalCodelet.setTimeStep(TIME_STEP);
 			exploreMotivationalCodeletIds.add(exploreMotivationalCodelet.getId());
 			motivationalCodelets.add(exploreMotivationalCodelet);
